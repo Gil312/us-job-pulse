@@ -1,15 +1,20 @@
 import { useState } from 'react';
 import { US_LABOR_BASELINE } from './data/usLaborBaseline';
 import { MacroDashboard } from './components/MacroDashboard';
-import { MacroMetricId } from './types/labor';
-import { Sparkles } from 'lucide-react';
+import { MacroMetricId, PopulationLens } from './types/labor';
+import { Activity } from 'lucide-react';
 
 export function App() {
   const [data] = useState(US_LABOR_BASELINE);
   const [selectedMetricId, setSelectedMetricId] = useState<MacroMetricId | null>(null);
+  const [activeLens, setActiveLens] = useState<PopulationLens>('all');
 
   const handleSelectMetric = (id: MacroMetricId) => {
     setSelectedMetricId((prev) => (prev === id ? null : id));
+  };
+
+  const handleLensChange = (lens: PopulationLens) => {
+    setActiveLens(lens);
   };
 
   return (
@@ -25,7 +30,7 @@ export function App() {
               <div className="font-bold tracking-tight text-white flex items-center gap-1.5 text-base sm:text-lg">
                 US Job Pulse
                 <span className="text-[10px] font-semibold tracking-wider uppercase px-1.5 py-0.5 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
-                  Macro
+                  Live
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block">
@@ -35,9 +40,11 @@ export function App() {
           </div>
 
           <div className="flex items-center gap-2">
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-slate-900 border border-slate-800 text-slate-300">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              Phase 1 Active
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+              <Activity className="w-3.5 h-3.5 animate-pulse" />
+              {activeLens === 'all' && 'All US Pop'}
+              {activeLens === 'employed' && 'Employed Cohort'}
+              {activeLens === 'unemployed' && 'Unemployed Cohort'}
             </span>
           </div>
         </div>
@@ -49,6 +56,8 @@ export function App() {
           data={data}
           selectedMetricId={selectedMetricId}
           onSelectMetric={handleSelectMetric}
+          activeLens={activeLens}
+          onLensChange={handleLensChange}
           lastUpdated={new Date().toLocaleTimeString()}
         />
       </main>

@@ -20,10 +20,10 @@ Phases are intentionally small — each should be implementable in one focused s
 
 **Goal:** Enable one-tap switching between **All Population**, **Employed (Full-Time / Part-Time)**, and **Unemployed** directly on the front dashboard so all macro cards, population percentages, and labor ratios dynamically recalculate and highlight in real time.
 
-- [ ] Implement the `PopulationLensBar` segmented toggle control (`All US Population`, `Employed`, `Unemployed`) pinned cleanly at the top of the front dashboard, plus direct quick-filter triggers on the Employed and Unemployed cards.
-- [ ] Build the `usePopulationLens` cross-filter computation engine that recalculates contextual metrics in real time (e.g., Employed mode highlights Full-Time vs. Part-Time share, Active Hires rate, and Job Openings rate; Unemployed mode highlights U-3 vs. U-6 unemployment, Job Postings per Unemployed Person ratio, and Layoffs share).
-- [ ] Add interactive Population Composition Bar & contextual KPI callout pills that morph smoothly when switching between `All`, `Employed`, and `Unemployed`.
-- [ ] Write automated tests (`tests/phase2-population-lens.test.tsx`) verifying that clicking Employed or Unemployed dynamically updates displayed population metrics and contextual indicators in real time.
+- [x] Implement the `PopulationLensBar` segmented toggle control (`All US Population`, `Employed`, `Unemployed`) pinned cleanly at the top of the front dashboard, plus direct quick-filter triggers on the Employed and Unemployed cards.
+- [x] Build the `usePopulationLens` cross-filter computation engine that recalculates contextual metrics in real time (e.g., Employed mode highlights Full-Time vs. Part-Time share, Active Hires rate, and Job Openings rate; Unemployed mode highlights U-3 vs. U-6 unemployment, Job Postings per Unemployed Person ratio, and Layoffs share).
+- [x] Add interactive Population Composition Bar & contextual KPI callout pills that morph smoothly when switching between `All`, `Employed`, and `Unemployed`.
+- [x] Write automated tests (`tests/phase2-population-lens.test.tsx`) verifying that clicking Employed or Unemployed dynamically updates displayed population metrics and contextual indicators in real time.
 
 ---
 

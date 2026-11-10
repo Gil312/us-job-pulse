@@ -13,6 +13,8 @@ describe('Phase 1 - Macro Dashboard & Metrics', () => {
         data={US_LABOR_BASELINE}
         selectedMetricId={null}
         onSelectMetric={handleSelect}
+        activeLens="all"
+        onLensChange={vi.fn()}
       />
     );
 
@@ -25,12 +27,12 @@ describe('Phase 1 - Macro Dashboard & Metrics', () => {
     expect(screen.getByText('Layoffs & Discharges')).toBeInTheDocument();
 
     // Verify key headline values
-    expect(screen.getByText('341.2M')).toBeInTheDocument();
-    expect(screen.getByText('161.5M')).toBeInTheDocument();
-    expect(screen.getByText('6.9M')).toBeInTheDocument();
-    expect(screen.getByText('7.74M')).toBeInTheDocument();
-    expect(screen.getByText('5.42M')).toBeInTheDocument();
-    expect(screen.getByText('1.61M')).toBeInTheDocument();
+    expect(screen.getAllByText('341.2M').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('161.5M').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('6.9M').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('7.74M').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('5.42M').length).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText('1.61M').length).toBeGreaterThanOrEqual(1);
   });
 
   it('renders the Full-Time and Part-Time split correctly inside the Employed metric card', () => {
@@ -54,6 +56,8 @@ describe('Phase 1 - Macro Dashboard & Metrics', () => {
         data={US_LABOR_BASELINE}
         selectedMetricId={null}
         onSelectMetric={handleSelect}
+        activeLens="all"
+        onLensChange={vi.fn()}
       />
     );
 
@@ -65,6 +69,6 @@ describe('Phase 1 - Macro Dashboard & Metrics', () => {
   it('renders full App shell cleanly', () => {
     render(<App />);
     expect(screen.getByText('US Job Pulse')).toBeInTheDocument();
-    expect(screen.getByText(/US Labor Market Macro Dashboard/i)).toBeInTheDocument();
+    expect(screen.getByText(/Macro Metrics Dashboard/i)).toBeInTheDocument();
   });
 });

@@ -1,12 +1,17 @@
 import React from 'react';
 import { MetricCard } from './MetricCard';
-import { MacroMetricId, USLaborMarketSnapshot } from '../types/labor';
+import { PopulationLensBar } from './PopulationLensBar';
+import { PopulationCompositionBar } from './PopulationCompositionBar';
+import { MacroMetricId, PopulationLens, USLaborMarketSnapshot } from '../types/labor';
+import { usePopulationLens } from '../hooks/usePopulationLens';
 import { Activity, ShieldCheck, RefreshCw } from 'lucide-react';
 
 interface MacroDashboardProps {
   data: USLaborMarketSnapshot;
   selectedMetricId: MacroMetricId | null;
   onSelectMetric: (id: MacroMetricId) => void;
+  activeLens: PopulationLens;
+  onLensChange: (lens: PopulationLens) => void;
   lastUpdated?: string;
   onRefresh?: () => void;
 }
@@ -15,10 +20,11 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
   data,
   selectedMetricId,
   onSelectMetric,
+  activeLens,
+  onLensChange,
   lastUpdated,
   onRefresh,
 }) => {
-  // Ordered sequence of the 6 core macro cards
   const metricOrder: MacroMetricId[] = [
     'us_population',
     'employed',
@@ -28,9 +34,33 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
     'layoffs',
   ];
 
+  // Derive reactive cohort analysis and ratios based on activeLens
+  const lensSummary = usePopulationLens(data, activeLens);
+
+  // Compute other population (youth + not in labor force)
+  const notInLaborForce = data.populationTotal - data.civilianLaborForce;
+
   return (
-    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-      {/* Top Macro Summary Bar */}
+    <section className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+      {/* Front Dashboard Segmented Lens Bar */}
+      <PopulationLensBar
+        activeLens={activeLens}
+        onLensChange={onLensChange}
+        employedCount={data.metrics.employed.formattedValue}
+        unemployedCount={data.metrics.unemployed.formattedValue}
+        totalPopulation={data.metrics.us_population.formattedValue}
+      />
+
+      {/* Dynamic Population Composition & Key Ratios Bar */}
+      <PopulationCompositionBar
+        summary={lensSummary}
+        employedCount={data.metrics.employed.headlineValue}
+        unemployedCount={data.metrics.unemployed.headlineValue}
+        totalPopulation={data.populationTotal}
+        notInLaborForceCount={notInLaborForce}
+      />
+
+      {/* Top Macro Status Header */}
       <div className="mb-6 p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900/90 to-blue-950/40 border border-slate-800 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
@@ -44,7 +74,7 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
           </div>
           <h1 className="mt-1 text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
             <Activity className="w-6 h-6 text-cyan-400" />
-            US Labor Market Macro Dashboard
+            Macro Metrics Dashboard
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
             {data.headlineSummary}
@@ -82,12 +112,19 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {metricOrder.map((metricId) => {
           const metric = data.metrics[metricId];
+          const isDimmed = lensSummary.dimmedMetricIds.includes(metricId);
+          const isHighlighted = lensSummary.highlightMetricIds.includes(metricId);
+
           return (
             <MetricCard
               key={metricId}
               metric={metric}
               isSelected={selectedMetricId === metricId}
               onSelect={onSelectMetric}
+              activeLens={activeLens}
+              onQuickFilter={onLensChange}
+              isDimmed={isDimmed}
+              isHighlighted={isHighlighted}
             />
           );
         })}
