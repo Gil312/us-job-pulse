@@ -1,13 +1,26 @@
 import { useState } from 'react';
 import { US_LABOR_BASELINE } from './data/usLaborBaseline';
 import { MacroDashboard } from './components/MacroDashboard';
-import { MacroMetricId, PopulationLens } from './types/labor';
+import { usePersistentState } from './hooks/usePersistentState';
+import { LivePulseMode, MacroMetricId, PopulationLens } from './types/labor';
 import { Activity } from 'lucide-react';
+
+const ALLOWED_LENSES: readonly PopulationLens[] = ['all', 'employed', 'unemployed'];
+const ALLOWED_PULSE_MODES: readonly LivePulseMode[] = ['snapshot', 'session', 'today'];
 
 export function App() {
   const [data] = useState(US_LABOR_BASELINE);
   const [selectedMetricId, setSelectedMetricId] = useState<MacroMetricId | null>(null);
-  const [activeLens, setActiveLens] = useState<PopulationLens>('all');
+  const [activeLens, setActiveLens, resetLens] = usePersistentState<PopulationLens>(
+    'usjp_population_lens',
+    'all',
+    ALLOWED_LENSES
+  );
+  const [pulseMode, setPulseMode, resetPulseMode] = usePersistentState<LivePulseMode>(
+    'usjp_pulse_mode',
+    'snapshot',
+    ALLOWED_PULSE_MODES
+  );
 
   const handleSelectMetric = (id: MacroMetricId) => {
     setSelectedMetricId(id);
@@ -17,8 +30,10 @@ export function App() {
     setSelectedMetricId(null);
   };
 
-  const handleLensChange = (lens: PopulationLens) => {
-    setActiveLens(lens);
+  const handleResetPreferences = () => {
+    resetLens();
+    resetPulseMode();
+    setSelectedMetricId(null);
   };
 
   return (
@@ -62,7 +77,10 @@ export function App() {
           onSelectMetric={handleSelectMetric}
           onCloseMetric={handleCloseMetric}
           activeLens={activeLens}
-          onLensChange={handleLensChange}
+          onLensChange={setActiveLens}
+          pulseMode={pulseMode}
+          onPulseModeChange={setPulseMode}
+          onResetPreferences={handleResetPreferences}
           lastUpdated={new Date().toLocaleTimeString()}
         />
       </main>

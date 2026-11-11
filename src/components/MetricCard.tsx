@@ -22,6 +22,7 @@ interface MetricCardProps {
   onQuickFilter?: (lens: PopulationLens) => void;
   isDimmed?: boolean;
   isHighlighted?: boolean;
+  liveFlowBadge?: string | null;
 }
 
 const ICON_MAP = {
@@ -86,6 +87,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   onQuickFilter,
   isDimmed = false,
   isHighlighted = false,
+  liveFlowBadge = null,
 }) => {
   const Icon = ICON_MAP[metric.id] || Users;
   const styleConfig = COLOR_CLASSES[metric.accentColor] || COLOR_CLASSES.blue;
@@ -169,13 +171,22 @@ export const MetricCard: React.FC<MetricCardProps> = ({
         </div>
 
         {/* Delta and direction badge */}
-        <div className="mt-1 flex items-center gap-2">
+        <div className="mt-1 flex flex-wrap items-center gap-2">
           <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium border ${styleConfig.badge}`}>
             {metric.momDirection === 'up' && <TrendingUp className="w-3 h-3" />}
             {metric.momDirection === 'down' && <TrendingDown className="w-3 h-3" />}
             {metric.momDirection === 'flat' && <Minus className="w-3 h-3" />}
             {metric.momFormatted}
           </span>
+          {liveFlowBadge && (
+            <span
+              data-testid={`live-badge-${metric.id}`}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 tabular-nums"
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+              {liveFlowBadge}
+            </span>
+          )}
         </div>
       </div>
 

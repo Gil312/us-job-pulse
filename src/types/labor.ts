@@ -8,6 +8,8 @@ export type MacroMetricId =
 
 export type PopulationLens = 'all' | 'employed' | 'unemployed';
 
+export type LivePulseMode = 'snapshot' | 'session' | 'today';
+
 export type MicroDimension = 'sector' | 'demographics' | 'trend12m';
 
 export interface MicroBarItem {

@@ -24,6 +24,7 @@ interface MicroDrilldownSheetProps {
   activeLens: PopulationLens;
   onClose: () => void;
   onSelectMetric: (id: MacroMetricId) => void;
+  variant?: 'overlay' | 'inline';
 }
 
 const DIMENSION_TABS: Array<{
@@ -84,11 +85,12 @@ export const MicroDrilldownSheet: React.FC<MicroDrilldownSheetProps> = ({
   activeLens,
   onClose,
   onSelectMetric,
+  variant = 'overlay',
 }) => {
   const [dimension, setDimension] = useState<MicroDimension>('sector');
 
   useEffect(() => {
-    if (!metric) return;
+    if (!metric || variant === 'inline') return;
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
@@ -96,7 +98,7 @@ export const MicroDrilldownSheet: React.FC<MicroDrilldownSheetProps> = ({
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [metric, onClose]);
+  }, [metric, variant, onClose]);
 
   if (!metric) return null;
 
@@ -107,27 +109,20 @@ export const MicroDrilldownSheet: React.FC<MicroDrilldownSheetProps> = ({
       ? [...currentItems].sort((a, b) => b.value - a.value)[0]
       : null;
 
-  return (
+  const panelContent = (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center lg:items-stretch lg:justify-end"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="micro-sheet-title"
-      data-testid="micro-drilldown-sheet"
+      className={
+        variant === 'inline'
+          ? 'w-full bg-slate-900/95 border border-slate-700/80 rounded-2xl shadow-2xl flex flex-col overflow-hidden sticky top-20 max-h-[calc(100vh-6rem)]'
+          : 'relative z-10 w-full max-h-[90vh] sm:max-w-2xl sm:mx-auto lg:mx-0 lg:max-w-2xl lg:h-full lg:max-h-full bg-slate-900 border-t sm:border lg:border-t-0 lg:border-l border-slate-700/80 rounded-t-3xl sm:rounded-3xl lg:rounded-none shadow-2xl flex flex-col overflow-hidden'
+      }
     >
-      {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-        data-testid="micro-sheet-backdrop"
-      />
-
-      {/* Responsive Sheet / Drawer */}
-      <div className="relative z-10 w-full max-h-[90vh] sm:max-w-2xl sm:mx-auto lg:mx-0 lg:max-w-2xl lg:h-full lg:max-h-full bg-slate-900 border-t sm:border lg:border-t-0 lg:border-l border-slate-700/80 rounded-t-3xl sm:rounded-3xl lg:rounded-none shadow-2xl flex flex-col overflow-hidden">
-        {/* Mobile drag handle indicator */}
+      {/* Mobile drag handle indicator */}
+      {variant === 'overlay' && (
         <div className="sm:hidden flex justify-center pt-3 pb-1 shrink-0">
           <div className="w-12 h-1.5 rounded-full bg-slate-700" />
         </div>
+      )}
 
         {/* Sticky Sheet Header */}
         <div className="px-5 py-4 border-b border-slate-800 bg-slate-900/95 flex items-start justify-between gap-4 shrink-0">
@@ -263,6 +258,34 @@ export const MicroDrilldownSheet: React.FC<MicroDrilldownSheetProps> = ({
           </div>
         </div>
       </div>
+  );
+
+  if (variant === 'inline') {
+    return (
+      <aside
+        aria-label="Desktop Micro Breakdown Inspector"
+        data-testid="micro-drilldown-sheet"
+      >
+        {panelContent}
+      </aside>
+    );
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-end sm:items-center lg:items-stretch lg:justify-end"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="micro-sheet-title"
+      data-testid="micro-drilldown-sheet"
+    >
+      {/* Backdrop */}
+      <div
+        className="fixed inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+        data-testid="micro-sheet-backdrop"
+      />
+      {panelContent}
     </div>
   );
 };

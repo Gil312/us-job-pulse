@@ -42,10 +42,10 @@ Phases are intentionally small — each should be implementable in one focused s
 
 **Goal:** Add the hybrid Realtime Velocity Ticker (live per-second hires, job postings, and layoffs flow simulation based on US run-rates), desktop multi-column side-by-side comparison mode, and full verification.
 
-- [ ] Implement the `useRealtimePulse` hook and `LiveVelocityBanner` allowing users to toggle between **Official BLS Snapshot**, **Live Session Ticker** (real-time hires, layoffs, and postings since opening the app), and **Today's US Labor Flow** (estimated cumulative US labor events today).
-- [ ] Enhance desktop responsiveness (`lg:` / `xl:` breakpoints) so desktop users can view the 6-card Macro Grid alongside a persistent or split-screen Micro Bar Chart inspector while keeping mobile compact and thumb-friendly.
-- [ ] Persist user preferences (`PopulationLens`, `LivePulseMode`) in `localStorage` and add a quick "Reset / Compare" utility.
-- [ ] Run full test suite (`npm test`), typecheck (`npm run typecheck`), and production build (`npm run build`) to verify zero errors.
+- [x] Implement the `useRealtimePulse` hook and `LiveVelocityBanner` allowing users to toggle between **Official BLS Snapshot**, **Live Session Ticker** (real-time hires, layoffs, and postings since opening the app), and **Today's US Labor Flow** (estimated cumulative US labor events today).
+- [x] Enhance desktop responsiveness (`lg:` / `xl:` breakpoints) so desktop users can view the 6-card Macro Grid alongside a persistent or split-screen Micro Bar Chart inspector while keeping mobile compact and thumb-friendly.
+- [x] Persist user preferences (`PopulationLens`, `LivePulseMode`) in `localStorage` and add a quick "Reset / Compare" utility.
+- [x] Run full test suite (`npm test`), typecheck (`npm run typecheck`), and production build (`npm run build`) to verify zero errors.
 
 ---
 
@@ -53,31 +53,39 @@ Phases are intentionally small — each should be implementable in one focused s
 
 ```mermaid
 flowchart TD
-    Data["src/data/usLaborBaseline.ts (US_LABOR_BASELINE)"] --> App["src/App.tsx (State: activeLens, selectedMetricId)"]
+    Data["src/data/usLaborBaseline.ts (US_LABOR_BASELINE)"] --> App["src/App.tsx (Persisted State: activeLens, pulseMode, selectedMetricId)"]
+    Storage["localStorage (usjp_population_lens, usjp_pulse_mode)"] <--> App
 
     App --> Header["Sticky Header (Active Cohort Badge)"]
     App --> Dashboard["src/components/MacroDashboard.tsx"]
 
-    Dashboard --> Hook["src/hooks/usePopulationLens.ts (Cross-Filter Engine)"]
-    Data --> Hook
+    Dashboard --> PulseHook["src/hooks/useRealtimePulse.ts (Per-Second Flow Engine)"]
+    Dashboard --> LensHook["src/hooks/usePopulationLens.ts (Cross-Filter Engine)"]
+    Dashboard --> DesktopHook["src/hooks/useIsWideDesktop.ts (1280px+ Split-Screen Detector)"]
+    Data --> PulseHook
+    Data --> LensHook
+
+    PulseHook --> Ticker["LiveVelocityBanner (Snapshot | Live Session | Today's Flow)"]
+    Ticker -- "onModeChange()" --> App
 
     Dashboard --> LensBar["PopulationLensBar (All Pop | Employed | Unemployed)"]
     LensBar -- "onLensChange()" --> App
 
-    Hook --> CompBar["PopulationCompositionBar (Stacked Pop Bar + 4 Dynamic Ratios)"]
+    LensHook --> CompBar["PopulationCompositionBar (Stacked Pop Bar + 4 Dynamic Ratios)"]
+    Dashboard --> Compare["Compare & Reset Toolbar (Side-by-Side Cohort Panel)"]
 
-    Dashboard --> Grid["6 Macro Metric Cards Grid"]
+    Dashboard --> Grid["6 Macro Metric Cards Grid (2-col Split or 3-col Full)"]
     Grid --> CardPop["MetricCard: US Population (341.2M)"]
     Grid --> CardEmp["MetricCard: Employed (161.5M + FT/PT Split Bar)"]
     Grid --> CardUnemp["MetricCard: Unemployed (6.9M)"]
-    Grid --> CardPost["MetricCard: Job Postings (7.74M)"]
-    Grid --> CardHire["MetricCard: Hires (5.42M)"]
-    Grid --> CardLay["MetricCard: Layoffs (1.61M)"]
+    Grid --> CardPost["MetricCard: Job Postings (7.74M + Live Flow Badge)"]
+    Grid --> CardHire["MetricCard: Hires (5.42M + Live Flow Badge)"]
+    Grid --> CardLay["MetricCard: Layoffs (1.61M + Live Flow Badge)"]
 
     CardPop & CardEmp & CardUnemp -- "Quick Filter Lens Pill" --> App
     CardPop & CardEmp & CardUnemp & CardPost & CardHire & CardLay -- "Card Tap (onSelectMetric)" --> App
 
-    App -- "selectedMetricId != null" --> Sheet["MicroDrilldownSheet (Mobile Bottom Sheet / Desktop Side Drawer)"]
+    App -- "selectedMetricId != null" --> Sheet["MicroDrilldownSheet (Mobile Overlay Sheet / Desktop Inline Split Inspector)"]
     Sheet --> Context["Active Population Lens Context Banner"]
     Sheet --> Tabs["3 Dimension Tabs: Industry Sector | Work Type & Ages | 12-Month Trend"]
     Sheet --> Switcher["Sticky Footer: Quick-Switch All 6 Metrics"]
@@ -100,20 +108,26 @@ us-job-pulse/
 ├── src/
 │   ├── types/labor.ts                    # Domain interfaces & union types
 │   ├── data/usLaborBaseline.ts           # BLS/JOLTS baseline, breakdowns, run-rates
-│   ├── hooks/usePopulationLens.ts        # Realtime Employed/Unemployed ratio & highlight logic
+│   ├── hooks/
+│   │   ├── usePopulationLens.ts          # Realtime Employed/Unemployed ratio & highlight logic
+│   │   ├── useRealtimePulse.ts           # Per-second hires, postings, layoffs velocity ticker
+│   │   ├── usePersistentState.ts         # Safe localStorage state persistence helper
+│   │   └── useIsWideDesktop.ts           # Responsive 1280px+ split-screen breakpoint hook
 │   ├── components/
-│   │   ├── MacroDashboard.tsx            # Orchestrates lens bar, composition bar, grid & sheet
+│   │   ├── MacroDashboard.tsx            # Orchestrates ticker, lens bar, grid, compare & inspector
+│   │   ├── LiveVelocityBanner.tsx        # Snapshot / Live Session / Today's Flow ticker UI
 │   │   ├── PopulationLensBar.tsx         # Front 3-way cohort toggle (All / Employed / Unemployed)
 │   │   ├── PopulationCompositionBar.tsx  # Stacked population bar & 4 dynamic ratio cards
-│   │   ├── MetricCard.tsx                # 6 macro cards + FT/PT split bar + quick-filter pill
-│   │   ├── MicroDrilldownSheet.tsx       # Responsive mobile bottom sheet / desktop drawer
+│   │   ├── MetricCard.tsx                # 6 macro cards + FT/PT split bar + live flow badges
+│   │   ├── MicroDrilldownSheet.tsx       # Responsive mobile bottom sheet / desktop split inspector
 │   │   └── MicroBarChart.tsx             # Horizontal ranked & vertical 12M bar charts
 │   ├── test/setup.ts                     # Vitest + Testing Library setup
-│   ├── App.tsx                           # Root state (activeLens, selectedMetricId)
+│   ├── App.tsx                           # Root state & localStorage preference wiring
 │   ├── main.tsx                          # React 19 mount entry point
 │   └── index.css                         # Tailwind base & custom dark scrollbar styling
 └── tests/
     ├── phase1-macro-dashboard.test.tsx   # Phase 1 verification (4 tests)
     ├── phase2-population-lens.test.tsx   # Phase 2 verification (5 tests)
-    └── phase3-micro-barcharts.test.tsx   # Phase 3 verification (3 tests)
+    ├── phase3-micro-barcharts.test.tsx   # Phase 3 verification (3 tests)
+    └── phase4-realtime-ticker.test.tsx   # Phase 4 verification (4 tests)
 ```
