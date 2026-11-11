@@ -2,6 +2,7 @@ import React from 'react';
 import { MetricCard } from './MetricCard';
 import { PopulationLensBar } from './PopulationLensBar';
 import { PopulationCompositionBar } from './PopulationCompositionBar';
+import { MicroDrilldownSheet } from './MicroDrilldownSheet';
 import { MacroMetricId, PopulationLens, USLaborMarketSnapshot } from '../types/labor';
 import { usePopulationLens } from '../hooks/usePopulationLens';
 import { Activity, ShieldCheck, RefreshCw } from 'lucide-react';
@@ -10,6 +11,7 @@ interface MacroDashboardProps {
   data: USLaborMarketSnapshot;
   selectedMetricId: MacroMetricId | null;
   onSelectMetric: (id: MacroMetricId) => void;
+  onCloseMetric?: () => void;
   activeLens: PopulationLens;
   onLensChange: (lens: PopulationLens) => void;
   lastUpdated?: string;
@@ -20,6 +22,7 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
   data,
   selectedMetricId,
   onSelectMetric,
+  onCloseMetric,
   activeLens,
   onLensChange,
   lastUpdated,
@@ -138,6 +141,21 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
         </div>
         {lastUpdated && <span>Sync timestamp: {lastUpdated}</span>}
       </div>
+
+      {/* Macro-to-Micro Interactive Bar Chart Drill-Down Sheet */}
+      <MicroDrilldownSheet
+        metric={selectedMetricId ? data.metrics[selectedMetricId] : null}
+        allMetrics={data.metrics}
+        activeLens={activeLens}
+        onClose={() => {
+          if (onCloseMetric) {
+            onCloseMetric();
+          } else if (selectedMetricId) {
+            onSelectMetric(selectedMetricId);
+          }
+        }}
+        onSelectMetric={onSelectMetric}
+      />
     </section>
   );
 };

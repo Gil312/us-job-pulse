@@ -10,7 +10,11 @@ export function App() {
   const [activeLens, setActiveLens] = useState<PopulationLens>('all');
 
   const handleSelectMetric = (id: MacroMetricId) => {
-    setSelectedMetricId((prev) => (prev === id ? null : id));
+    setSelectedMetricId(id);
+  };
+
+  const handleCloseMetric = () => {
+    setSelectedMetricId(null);
   };
 
   const handleLensChange = (lens: PopulationLens) => {
@@ -56,6 +60,7 @@ export function App() {
           data={data}
           selectedMetricId={selectedMetricId}
           onSelectMetric={handleSelectMetric}
+          onCloseMetric={handleCloseMetric}
           activeLens={activeLens}
           onLensChange={handleLensChange}
           lastUpdated={new Date().toLocaleTimeString()}

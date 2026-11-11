@@ -31,10 +31,10 @@ Phases are intentionally small — each should be implementable in one focused s
 
 **Goal:** Allow clicking into any of the 6 Macro Metric Cards to open the Micro View displaying interactive bar charts across Industry Sectors, Demographics/Work Status, and 12-Month Historical Trends.
 
-- [ ] Build the `MicroBarChart` component supporting horizontal ranked bars (for Industry Sectors & Demographics) and vertical time-series bars (for 12-Month Trends), with animated fill bars, value labels, percentage shares, and MoM delta indicators.
-- [ ] Build the responsive `MicroDrilldownSheet` (touch-friendly bottom sheet on mobile viewports, sleek side/modal panel on desktop viewports) triggered by clicking any of the 6 Macro Metric Cards.
-- [ ] Wire dimension tabs (`By Industry Sector`, `Demographics & Work Type`, `12-Month Trend`) and connect the active `Employed` / `Unemployed` lens so micro bar charts also reflect the user's selected cohort context.
-- [ ] Write automated tests (`tests/phase3-micro-barcharts.test.tsx`) verifying that clicking each macro metric opens its micro bar chart view and switches cleanly across all 3 breakdown dimensions.
+- [x] Build the `MicroBarChart` component supporting horizontal ranked bars (for Industry Sectors & Demographics) and vertical time-series bars (for 12-Month Trends), with animated fill bars, value labels, percentage shares, and MoM delta indicators.
+- [x] Build the responsive `MicroDrilldownSheet` (touch-friendly bottom sheet on mobile viewports, sleek side/modal panel on desktop viewports) triggered by clicking any of the 6 Macro Metric Cards.
+- [x] Wire dimension tabs (`By Industry Sector`, `Demographics & Work Type`, `12-Month Trend`) and connect the active `Employed` / `Unemployed` lens so micro bar charts also reflect the user's selected cohort context.
+- [x] Write automated tests (`tests/phase3-micro-barcharts.test.tsx`) verifying that clicking each macro metric opens its micro bar chart view and switches cleanly across all 3 breakdown dimensions.
 
 ---
 
