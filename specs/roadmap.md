@@ -46,3 +46,74 @@ Phases are intentionally small — each should be implementable in one focused s
 - [ ] Enhance desktop responsiveness (`lg:` / `xl:` breakpoints) so desktop users can view the 6-card Macro Grid alongside a persistent or split-screen Micro Bar Chart inspector while keeping mobile compact and thumb-friendly.
 - [ ] Persist user preferences (`PopulationLens`, `LivePulseMode`) in `localStorage` and add a quick "Reset / Compare" utility.
 - [ ] Run full test suite (`npm test`), typecheck (`npm run typecheck`), and production build (`npm run build`) to verify zero errors.
+
+---
+
+## Architecture & Flow Diagram Tree
+
+```mermaid
+flowchart TD
+    Data["src/data/usLaborBaseline.ts (US_LABOR_BASELINE)"] --> App["src/App.tsx (State: activeLens, selectedMetricId)"]
+
+    App --> Header["Sticky Header (Active Cohort Badge)"]
+    App --> Dashboard["src/components/MacroDashboard.tsx"]
+
+    Dashboard --> Hook["src/hooks/usePopulationLens.ts (Cross-Filter Engine)"]
+    Data --> Hook
+
+    Dashboard --> LensBar["PopulationLensBar (All Pop | Employed | Unemployed)"]
+    LensBar -- "onLensChange()" --> App
+
+    Hook --> CompBar["PopulationCompositionBar (Stacked Pop Bar + 4 Dynamic Ratios)"]
+
+    Dashboard --> Grid["6 Macro Metric Cards Grid"]
+    Grid --> CardPop["MetricCard: US Population (341.2M)"]
+    Grid --> CardEmp["MetricCard: Employed (161.5M + FT/PT Split Bar)"]
+    Grid --> CardUnemp["MetricCard: Unemployed (6.9M)"]
+    Grid --> CardPost["MetricCard: Job Postings (7.74M)"]
+    Grid --> CardHire["MetricCard: Hires (5.42M)"]
+    Grid --> CardLay["MetricCard: Layoffs (1.61M)"]
+
+    CardPop & CardEmp & CardUnemp -- "Quick Filter Lens Pill" --> App
+    CardPop & CardEmp & CardUnemp & CardPost & CardHire & CardLay -- "Card Tap (onSelectMetric)" --> App
+
+    App -- "selectedMetricId != null" --> Sheet["MicroDrilldownSheet (Mobile Bottom Sheet / Desktop Side Drawer)"]
+    Sheet --> Context["Active Population Lens Context Banner"]
+    Sheet --> Tabs["3 Dimension Tabs: Industry Sector | Work Type & Ages | 12-Month Trend"]
+    Sheet --> Switcher["Sticky Footer: Quick-Switch All 6 Metrics"]
+    Tabs --> Chart["MicroBarChart"]
+
+    Chart --> Horiz["Horizontal Ranked Bars (Sector / Work Type + Lens Focus Badges)"]
+    Chart --> Vert["Vertical Column Bars (12-Month Historical Trend + YoY Net)"]
+```
+
+---
+
+## Component & File Tree
+
+```text
+us-job-pulse/
+├── specs/
+│   ├── mission.md                        # Product vision, entities, scope boundaries
+│   ├── tech-stack.md                     # React 19, TS, Tailwind, Vitest conventions
+│   └── roadmap.md                        # Phased checklist, architecture flow & file tree
+├── src/
+│   ├── types/labor.ts                    # Domain interfaces & union types
+│   ├── data/usLaborBaseline.ts           # BLS/JOLTS baseline, breakdowns, run-rates
+│   ├── hooks/usePopulationLens.ts        # Realtime Employed/Unemployed ratio & highlight logic
+│   ├── components/
+│   │   ├── MacroDashboard.tsx            # Orchestrates lens bar, composition bar, grid & sheet
+│   │   ├── PopulationLensBar.tsx         # Front 3-way cohort toggle (All / Employed / Unemployed)
+│   │   ├── PopulationCompositionBar.tsx  # Stacked population bar & 4 dynamic ratio cards
+│   │   ├── MetricCard.tsx                # 6 macro cards + FT/PT split bar + quick-filter pill
+│   │   ├── MicroDrilldownSheet.tsx       # Responsive mobile bottom sheet / desktop drawer
+│   │   └── MicroBarChart.tsx             # Horizontal ranked & vertical 12M bar charts
+│   ├── test/setup.ts                     # Vitest + Testing Library setup
+│   ├── App.tsx                           # Root state (activeLens, selectedMetricId)
+│   ├── main.tsx                          # React 19 mount entry point
+│   └── index.css                         # Tailwind base & custom dark scrollbar styling
+└── tests/
+    ├── phase1-macro-dashboard.test.tsx   # Phase 1 verification (4 tests)
+    ├── phase2-population-lens.test.tsx   # Phase 2 verification (5 tests)
+    └── phase3-micro-barcharts.test.tsx   # Phase 3 verification (3 tests)
+```
