@@ -92,7 +92,9 @@ export const US_LABOR_BASELINE: USLaborMarketSnapshot = {
           { id: 'sec_mfg', label: 'Manufacturing', value: 12_900_000, formattedValue: '12.9M', sharePercentage: 8.0, deltaMoM: -0.2, deltaType: 'negative' },
           { id: 'sec_const', label: 'Construction', value: 8_300_000, formattedValue: '8.3M', sharePercentage: 5.1, deltaMoM: 0.2, deltaType: 'positive' },
           { id: 'sec_tech', label: 'Information & Tech', value: 3_100_000, formattedValue: '3.1M', sharePercentage: 1.9, deltaMoM: -0.1, deltaType: 'neutral' },
-          { id: 'sec_other', label: 'Financial Activities & Other', value: 30_600_000, formattedValue: '30.6M', sharePercentage: 19.0 },
+          { id: 'sec_fin', label: 'Financial Activities & Real Estate', value: 9_300_000, formattedValue: '9.3M', sharePercentage: 5.8, deltaMoM: 0.1, deltaType: 'positive' },
+          { id: 'sec_edu', label: 'Private Educational Services', value: 3_900_000, formattedValue: '3.9M', sharePercentage: 2.4, deltaMoM: 0.3, deltaType: 'positive' },
+          { id: 'sec_other', label: 'Other Services & Self-Employed', value: 17_400_000, formattedValue: '17.4M', sharePercentage: 10.8 },
         ],
         demographics: [
           { id: 'ft_standard', label: 'Full-Time Workers (>=35 hrs/wk)', value: 134_800_000, formattedValue: '134.8M', sharePercentage: 83.5, subLabel: 'Primary economic engine' },

@@ -32,8 +32,8 @@ const DIMENSION_TABS: Array<{
   shortLabel: string;
   icon: React.ComponentType<{ className?: string }>;
 }> = [
-  { id: 'sector', label: 'By Industry Sector', shortLabel: 'Sectors', icon: Building2 },
-  { id: 'demographics', label: 'Demographics & Work Type', shortLabel: 'Work Type', icon: Users2 },
+  { id: 'sector', label: 'Industry Sector', shortLabel: 'Sectors', icon: Building2 },
+  { id: 'demographics', label: 'Work Type & Ages', shortLabel: 'Work Type', icon: Users2 },
   { id: 'trend12m', label: '12-Month Trend', shortLabel: '12M Trend', icon: CalendarRange },
 ];
 
@@ -123,7 +123,7 @@ export const MicroDrilldownSheet: React.FC<MicroDrilldownSheetProps> = ({
       />
 
       {/* Responsive Sheet / Drawer */}
-      <div className="relative z-10 w-full max-h-[90vh] sm:max-w-2xl sm:mx-auto lg:mx-0 lg:max-w-xl lg:h-full lg:max-h-full bg-slate-900 border-t sm:border lg:border-t-0 lg:border-l border-slate-700/80 rounded-t-3xl sm:rounded-3xl lg:rounded-none shadow-2xl flex flex-col overflow-hidden">
+      <div className="relative z-10 w-full max-h-[90vh] sm:max-w-2xl sm:mx-auto lg:mx-0 lg:max-w-2xl lg:h-full lg:max-h-full bg-slate-900 border-t sm:border lg:border-t-0 lg:border-l border-slate-700/80 rounded-t-3xl sm:rounded-3xl lg:rounded-none shadow-2xl flex flex-col overflow-hidden">
         {/* Mobile drag handle indicator */}
         <div className="sm:hidden flex justify-center pt-3 pb-1 shrink-0">
           <div className="w-12 h-1.5 rounded-full bg-slate-700" />
