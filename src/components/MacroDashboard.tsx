@@ -4,6 +4,7 @@ import { PopulationLensBar } from './PopulationLensBar';
 import { PopulationCompositionBar } from './PopulationCompositionBar';
 import { LiveVelocityBanner } from './LiveVelocityBanner';
 import { MicroDrilldownSheet } from './MicroDrilldownSheet';
+import { MethodologyModal } from './MethodologyModal';
 import {
   LivePulseMode,
   MacroMetricId,
@@ -44,6 +45,7 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
 }) => {
   const [internalPulseMode, setInternalPulseMode] = useState<LivePulseMode>(pulseMode);
   const [showCompare, setShowCompare] = useState(false);
+  const [showMethodology, setShowMethodology] = useState(false);
 
   const effectivePulseMode = onPulseModeChange ? pulseMode : internalPulseMode;
   const handlePulseModeChange = onPulseModeChange ?? setInternalPulseMode;
@@ -107,6 +109,7 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
         onModeChange={handlePulseModeChange}
         pulse={pulse}
         runRates={data.runRatesPerSecond}
+        onOpenMethodology={() => setShowMethodology(true)}
       />
 
       {/* Front Dashboard Segmented Lens Bar */}
@@ -309,12 +312,26 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
 
       {/* Attribution footer */}
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2 px-1">
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
           <ShieldCheck className="w-4 h-4 text-slate-400" />
           <span>Source: {data.source}</span>
+          <button
+            type="button"
+            onClick={() => setShowMethodology(true)}
+            className="text-cyan-400 hover:text-cyan-300 underline underline-offset-2 font-medium"
+          >
+            View Proof &amp; Series IDs
+          </button>
         </div>
         {lastUpdated && <span>Sync timestamp: {lastUpdated}</span>}
       </div>
+
+      {/* Data Proof & Methodology Modal */}
+      <MethodologyModal
+        isOpen={showMethodology}
+        onClose={() => setShowMethodology(false)}
+        data={data}
+      />
 
       {/* Mobile / Standard Viewport Overlay Sheet */}
       {!isWideDesktop && (

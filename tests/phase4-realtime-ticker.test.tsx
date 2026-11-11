@@ -3,11 +3,14 @@ import { render, screen, fireEvent, act } from '@testing-library/react';
 import App from '../src/App';
 
 describe('Phase 4 - Realtime Velocity Ticker, Desktop Split-Screen & Persistence', () => {
+  const originalMatchMedia = window.matchMedia;
+
   beforeEach(() => {
     window.localStorage.clear();
   });
 
   afterEach(() => {
+    window.matchMedia = originalMatchMedia;
     vi.useRealTimers();
     vi.restoreAllMocks();
     window.localStorage.clear();
@@ -111,5 +114,19 @@ describe('Phase 4 - Realtime Velocity Ticker, Desktop Split-Screen & Persistence
     expect(inspector.tagName.toLowerCase()).toBe('aside');
     expect(inspector).toHaveAttribute('aria-label', 'Desktop Micro Breakdown Inspector');
     expect(screen.getByTestId('dashboard-workspace')).toHaveClass('xl:grid-cols-12');
+  });
+
+  it('opens the Data Proof & Methodology modal with series IDs and run-rate math', () => {
+    render(<App />);
+
+    fireEvent.click(screen.getByTestId('open-methodology-btn'));
+    const modal = screen.getByTestId('methodology-modal');
+    expect(modal).toBeInTheDocument();
+    expect(modal).toHaveTextContent(/JTSHIL/i);
+    expect(modal).toHaveTextContent(/JTSJOL/i);
+    expect(modal).toHaveTextContent(/2\.08 \/ sec/i);
+
+    fireEvent.click(screen.getByTestId('close-methodology-btn'));
+    expect(screen.queryByTestId('methodology-modal')).not.toBeInTheDocument();
   });
 });

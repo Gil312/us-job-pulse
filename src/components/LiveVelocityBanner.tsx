@@ -1,13 +1,14 @@
 import React from 'react';
 import { LivePulseMode, USLaborMarketSnapshot } from '../types/labor';
 import { RealtimePulseState } from '../hooks/useRealtimePulse';
-import { Radio, Clock, CalendarClock, RotateCcw, Zap, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { Radio, Clock, CalendarClock, RotateCcw, Zap, ArrowUpRight, ArrowDownRight, HelpCircle } from 'lucide-react';
 
 interface LiveVelocityBannerProps {
   mode: LivePulseMode;
   onModeChange: (mode: LivePulseMode) => void;
   pulse: RealtimePulseState;
   runRates: USLaborMarketSnapshot['runRatesPerSecond'];
+  onOpenMethodology?: () => void;
 }
 
 function formatNumber(n: number): string {
@@ -25,6 +26,7 @@ export const LiveVelocityBanner: React.FC<LiveVelocityBannerProps> = ({
   onModeChange,
   pulse,
   runRates,
+  onOpenMethodology,
 }) => {
   const isLive = mode !== 'snapshot';
 
@@ -57,7 +59,7 @@ export const LiveVelocityBanner: React.FC<LiveVelocityBannerProps> = ({
             <Zap className={`w-4 h-4 ${isLive ? 'animate-pulse' : ''}`} />
           </span>
           <div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
                 Realtime US Velocity Ticker
               </span>
@@ -66,6 +68,17 @@ export const LiveVelocityBanner: React.FC<LiveVelocityBannerProps> = ({
                   <Clock className="w-2.5 h-2.5" />
                   {formatElapsed(pulse.elapsedSessionSeconds)}
                 </span>
+              )}
+              {onOpenMethodology && (
+                <button
+                  type="button"
+                  data-testid="open-methodology-btn"
+                  onClick={onOpenMethodology}
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 transition-colors"
+                >
+                  <HelpCircle className="w-2.5 h-2.5" />
+                  <span>Proof &amp; Math</span>
+                </button>
               )}
             </div>
             <p className="text-[11px] text-slate-400">

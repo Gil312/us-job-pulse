@@ -45,7 +45,19 @@ Phases are intentionally small — each should be implementable in one focused s
 - [x] Implement the `useRealtimePulse` hook and `LiveVelocityBanner` allowing users to toggle between **Official BLS Snapshot**, **Live Session Ticker** (real-time hires, layoffs, and postings since opening the app), and **Today's US Labor Flow** (estimated cumulative US labor events today).
 - [x] Enhance desktop responsiveness (`lg:` / `xl:` breakpoints) so desktop users can view the 6-card Macro Grid alongside a persistent or split-screen Micro Bar Chart inspector while keeping mobile compact and thumb-friendly.
 - [x] Persist user preferences (`PopulationLens`, `LivePulseMode`) in `localStorage` and add a quick "Reset / Compare" utility.
+- [x] Add `MethodologyModal` transparency modal exposing BLS/FRED series IDs, run-rate math, and official-vs-estimated labels.
 - [x] Run full test suite (`npm test`), typecheck (`npm run typecheck`), and production build (`npm run build`) to verify zero errors.
+
+---
+
+## Phase 5: Live Citizen Check-In, Privacy-Preserving Auth & Official API Sync (Planned)
+
+**Goal:** Enable US citizens to submit live work status (`Working` [Full-Time/Part-Time] vs. `Not Working` + unemployment duration `<5w / 5-14w / 15-26w / 27+w` + target industry) with anti-bot protection, split-identity privacy hashing, and live BLS/FRED API synchronization.
+
+- [ ] Build the 10-second `CitizenCheckInSheet` (`Working` vs. `Not Working` + duration bracket + target industry) and a separate **Live Citizen Pulse** comparison bar alongside Official BLS benchmarks.
+- [ ] Implement Split-Identity Verification (Google/Apple OAuth + Cloudflare Turnstile + `HMAC-SHA256` one-way hash linking 1 active status per human without storing PII alongside labor records, plus 30-day auto-expiry TTL).
+- [ ] Add a scheduled BLS/FRED/USAJOBS API ingestion adapter to replace the local baseline snapshot with live federal release syncs.
+- [ ] Write integration and privacy-isolation tests verifying anonymous aggregation, single-status upsert, and expiration behavior.
 
 ---
 
@@ -120,7 +132,8 @@ us-job-pulse/
 │   │   ├── PopulationCompositionBar.tsx  # Stacked population bar & 4 dynamic ratio cards
 │   │   ├── MetricCard.tsx                # 6 macro cards + FT/PT split bar + live flow badges
 │   │   ├── MicroDrilldownSheet.tsx       # Responsive mobile bottom sheet / desktop split inspector
-│   │   └── MicroBarChart.tsx             # Horizontal ranked & vertical 12M bar charts
+│   │   ├── MicroBarChart.tsx             # Horizontal ranked & vertical 12M bar charts
+│   │   └── MethodologyModal.tsx          # Data proof, BLS/FRED series IDs & run-rate math modal
 │   ├── test/setup.ts                     # Vitest + Testing Library setup
 │   ├── App.tsx                           # Root state & localStorage preference wiring
 │   ├── main.tsx                          # React 19 mount entry point

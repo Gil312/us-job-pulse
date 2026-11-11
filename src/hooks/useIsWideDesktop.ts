@@ -8,7 +8,7 @@ export function useIsWideDesktop(minWidthPx = 1280): boolean {
     if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
       return false;
     }
-    return window.matchMedia(`(min-width: ${minWidthPx}px)`).matches;
+    return Boolean(window.matchMedia(`(min-width: ${minWidthPx}px)`)?.matches);
   };
 
   const [isWide, setIsWide] = useState<boolean>(getMatches);
@@ -18,6 +18,7 @@ export function useIsWideDesktop(minWidthPx = 1280): boolean {
       return;
     }
     const media = window.matchMedia(`(min-width: ${minWidthPx}px)`);
+    if (!media) return;
     const onChange = () => setIsWide(media.matches);
     setIsWide(media.matches);
     media.addEventListener('change', onChange);
