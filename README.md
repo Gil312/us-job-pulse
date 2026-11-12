@@ -2,6 +2,8 @@
 
 > **Realtime US Population & Employment Velocity Monitor**
 > A mobile-first, desktop-responsive macroeconomic dashboard distilling official Bureau of Labor Statistics (BLS) and JOLTS data into an intuitive **Macro-to-Micro** labor pulse monitor with crowdsourced citizen check-ins.
+>
+> 🌐 **Live Production App**: [https://us-job-pulse.us-job-pulse.workers.dev](https://us-job-pulse.us-job-pulse.workers.dev)
 
 [![Tests](https://img.shields.io/badge/Tests-20%2F20%20Passing-emerald?style=flat-square)](https://github.com/Gil312/us-job-pulse)
 [![React](https://img.shields.io/badge/React-19-blue?style=flat-square&logo=react)](https://react.dev/)
