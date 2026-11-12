@@ -64,7 +64,7 @@
 
 ---
 
-## Automated Ingestion & GitHub Secrets Setup
+## Automated Ingestion 
 
 The repository contains an automated synchronization script [`scripts/sync-bls.ts`](scripts/sync-bls.ts) that fetches the latest official labor series from the Federal Reserve Economic Data (FRED) API and Bureau of Labor Statistics (BLS).
 
