@@ -68,72 +68,8 @@
 
 The repository contains an automated synchronization script [`scripts/sync-bls.ts`](scripts/sync-bls.ts) that fetches the latest official labor series from the Federal Reserve Economic Data (FRED) API and Bureau of Labor Statistics (BLS).
 
-### Configuring API Keys in GitHub Secrets
-To allow the GitHub Actions workflow to query FRED and BLS APIs:
-1. Obtain a free FRED API key at [https://fred.stlouisfed.org/docs/api/api_key.html](https://fred.stlouisfed.org/docs/api/api_key.html).
-2. *(Optional)* Obtain a free BLS v2 registration key at [https://data.bls.gov/registrationEngine/](https://data.bls.gov/registrationEngine/).
-3. In your GitHub repository:
-   - Navigate to **Settings** > **Secrets and variables** > **Actions**.
-   - Click **New repository secret**.
-   - Name: `FRED_API_KEY`, Secret: `<your-fred-api-key>`.
-   - *(Optional)* Name: `BLS_API_KEY`, Secret: `<your-bls-api-key>`.
-
-### Manual Ingestion Trigger
-You can also trigger data synchronization at any time directly from GitHub:
-- Go to the **Actions** tab in your repository.
-- Select **Update US Labor Data (Automated BLS & FRED Sync)** in the sidebar.
-- Click **Run workflow** > **Branch: main**.
-
 ---
 
-## Getting Started
-
-### Prerequisites
-- Node.js (v20+ recommended)
-- npm (v10+)
-
-### Installation
-```bash
-# Clone the repository
-git clone https://github.com/Gil312/us-job-pulse.git
-cd us-job-pulse
-
-# Install dependencies
-npm install
-
-# Start the local development server
-npm run dev
-```
-
-Visit **http://127.0.0.1:5173/** in your browser.
-
-### Syncing Labor Data Locally
-```bash
-# Run the federal sync script locally (uses optional FRED_API_KEY env var)
-npm run sync:data
-
-# Or with your FRED API key:
-FRED_API_KEY=your_key_here npm run sync:data
-```
-
----
-
-## Automated Tests & Verification
-
-The project includes unit and component integration tests using **Vitest** and **React Testing Library**:
-
-```bash
-# Run the test suite (20 tests passing)
-npm test
-
-# Run strict TypeScript typecheck
-npm run typecheck
-
-# Build for production
-npm run build
-```
-
----
 
 ## Project Structure & Architecture
 
