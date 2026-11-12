@@ -44,6 +44,11 @@
 * **Mobile (< 1024px)**: Single-column touch-friendly cards (`44px+` tap targets) and smooth bottom-sheet drawers.
 * **Desktop (1280px+)**: Dynamic side-by-side split screen—click any macro card to inspect its micro bar charts in an inline panel without obscuring the macro metrics grid.
 
+### 6. Automated Federal Data Ingestion (Zero-Cost Serverless Cron)
+* **Scheduled Ingestion**: GitHub Actions workflow (`.github/workflows/update-labor-data.yml`) runs on Thursdays and Fridays at 9:00 AM EST (14:00 UTC) coinciding with weekly jobless claims and monthly BLS Employment Situation releases.
+* **Direct St. Louis Fed FRED & BLS Integration**: Queries live official series observations (`POPTHM`, `CE16OV`, `UNEMPLOY`, `UNRATE`, `JTSJOL`, `JTSHIL`, `JTSLDL`, `CIVPART`).
+* **Edge Static JSON Delivery**: Compiles normalized metrics directly to `public/data/latest.json`. Client applications fetch the latest snapshot with automatic fallback to high-fidelity embedded baseline data.
+
 ---
 
 ## Tech Stack & $0 Architecture
@@ -53,9 +58,31 @@
 | **Frontend** | React 19 + TypeScript + Vite | Blazing fast client bundle with strict type safety |
 | **Styling** | Tailwind CSS | Mobile-first modern slate & emerald/cyan/rose palette |
 | **Charts** | Lightweight SVG/CSS Bar Charts | Zero canvas bloat, smooth transitions, instant mobile load |
-| **Backend & DB (Phase 5)** | Supabase (PostgreSQL + RLS + Auth) | Free 50k MAUs, real SQL aggregations (`GROUP BY`), medical-grade Row-Level Security |
-| **Hosting & CDN** | Cloudflare Pages | Unlimited global edge bandwidth, $0/month |
-| **Scheduled Ingestion** | GitHub Actions | 2,000 free runner mins/month for weekly BLS/FRED API scraping |
+| **Backend & DB** | Supabase (PostgreSQL + RLS + Auth) | Free 50k MAUs, real SQL aggregations (`GROUP BY`), medical-grade Row-Level Security |
+| **Hosting & Edge CDN** | Cloudflare Pages / Workers | Unlimited global edge bandwidth, custom apex/subdomain routing, $0/month |
+| **Automated Ingestion** | GitHub Actions + Node.js (TSX) | 2,000 free runner mins/month for weekly BLS/FRED API synchronization |
+
+---
+
+## Automated Ingestion & GitHub Secrets Setup
+
+The repository contains an automated synchronization script [`scripts/sync-bls.ts`](scripts/sync-bls.ts) that fetches the latest official labor series from the Federal Reserve Economic Data (FRED) API and Bureau of Labor Statistics (BLS).
+
+### Configuring API Keys in GitHub Secrets
+To allow the GitHub Actions workflow to query FRED and BLS APIs:
+1. Obtain a free FRED API key at [https://fred.stlouisfed.org/docs/api/api_key.html](https://fred.stlouisfed.org/docs/api/api_key.html).
+2. *(Optional)* Obtain a free BLS v2 registration key at [https://data.bls.gov/registrationEngine/](https://data.bls.gov/registrationEngine/).
+3. In your GitHub repository:
+   - Navigate to **Settings** > **Secrets and variables** > **Actions**.
+   - Click **New repository secret**.
+   - Name: `FRED_API_KEY`, Secret: `<your-fred-api-key>`.
+   - *(Optional)* Name: `BLS_API_KEY`, Secret: `<your-bls-api-key>`.
+
+### Manual Ingestion Trigger
+You can also trigger data synchronization at any time directly from GitHub:
+- Go to the **Actions** tab in your repository.
+- Select **Update US Labor Data (Automated BLS & FRED Sync)** in the sidebar.
+- Click **Run workflow** > **Branch: main**.
 
 ---
 
@@ -80,6 +107,15 @@ npm run dev
 
 Visit **http://127.0.0.1:5173/** in your browser.
 
+### Syncing Labor Data Locally
+```bash
+# Run the federal sync script locally (uses optional FRED_API_KEY env var)
+npm run sync:data
+
+# Or with your FRED API key:
+FRED_API_KEY=your_key_here npm run sync:data
+```
+
 ---
 
 ## Automated Tests & Verification
@@ -103,6 +139,14 @@ npm run build
 
 ```text
 us-job-pulse/
+├── .github/
+│   └── workflows/
+│       └── update-labor-data.yml         # Scheduled Thursday/Friday GitHub Actions workflow
+├── scripts/
+│   └── sync-bls.ts                       # Federal BLS & FRED data ingestion script
+├── public/
+│   └── data/
+│       └── latest.json                   # Edge-cached public labor snapshot
 ├── specs/
 │   ├── mission.md                        # Product mission, domain models, boundaries
 │   ├── tech-stack.md                     # Architecture conventions, dependencies, verification

@@ -29,7 +29,7 @@ jobs:
         env:
           FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
           BLS_API_KEY: ${{ secrets.BLS_API_KEY }}
-        run: npx tsx scripts/sync-bls.ts
+        run: npm run sync:data
 
       - name: Commit and Push Updated Snapshot
         run: |
