@@ -22,6 +22,13 @@ To bridge the gap between monthly official government releases and a living dash
     2. `demographics`: Breakdown by Age Bracket (`16-24`, `25-54 Prime Working Age`, `55+`), Education Tier, and Work Status (`Full-Time >=35h`, `Part-Time Voluntary`, `Part-Time Economic`).
     3. `trend12m`: Trailing 12-month bar series showing monthly levels and momentum.
   - `LivePulseEngine`: The hybrid real-time ticker service that computes elapsed time and applies official US daily/per-second run-rates to display live cumulative hires, layoffs, and job posting flows alongside official baseline snapshots.
+  - `CitizenCheckIn`: A crowdsourced, privacy-preserving live labor status record submitted by verified individuals:
+    - `status`: `'working_fulltime'` | `'working_parttime'` | `'not_working_looking'`
+    - `duration`: `'< 5w'` | `'5-14w'` | `'15-26w'` | `'27+w'` (for seekers)
+    - `targetIndustry`: NAICS industry sector targeted
+    - `state`: Optional US 2-letter state code or `'US'` (Nationwide)
+    - `verificationTier`: `'anonymous_local'` (unauthenticated device token) vs. `'verified_citizen'` (Google/Apple OAuth with `HMAC-SHA256` privacy hash)
+    - `expiresAt`: 30-day soft-expiry window requiring a 1-tap reconfirmation to prevent ghost data.
 
 ## Key Workflows & User Journeys
 1. **Primary Flow (Front Dashboard & Employed/Unemployed Realtime Lens)**:

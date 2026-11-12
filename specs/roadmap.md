@@ -65,9 +65,14 @@ Phases are intentionally small — each should be implementable in one focused s
    - **$0 Cron without Credit Card Requirement**: Runs the 15-second weekly BLS API scraper for free, bypassing Firebase's requirement to upgrade to the Blaze credit-card plan for scheduled cloud functions.
 
 ### Tasks:
-- [ ] **Data Model & Privacy Contract**: Define the Supabase PostgreSQL schema with `citizen_checkins` table (anonymized hash `user_hash`, `status`, `duration_bucket`, `target_industry`, `state`, `updated_at`, `expires_at` with 30-day TTL) and strict Row-Level Security (RLS) policies.
-- [ ] **Client Check-In UI Flow**: Build the mobile-first `CitizenCheckInModal` (10-second flow: Step 1 `Working` [FT/PT] or `Not Working` -> Step 2 `Unemployment Duration` `<5w / 5-14w / 15-26w / 27+w` -> Step 3 `Target Industry`).
-- [ ] **Dual-Bar Live Comparison Component**: Build `CitizenPulseComparisonBar` displaying real-time citizen-reported ratios (e.g. *“42,150 Citizens Checked In • 78% Working / 22% Searching • Top Desired Sector: Healthcare”*) alongside official BLS numbers.
+- [ ] **Data Model & Privacy Contract**: Define the Supabase PostgreSQL schema with `citizen_checkins` table (anonymized hash `user_hash`, `status`, `duration_bucket`, `target_industry`, `state` [optional 2-letter code], `verification_tier` [`anonymous_local` vs. `verified_citizen`], `updated_at`, `expires_at` with 30-day soft-expiry window) and strict Row-Level Security (RLS) policies.
+- [ ] **Anonymous-First 10-Second Check-In Modal**: Build the mobile-first `CitizenCheckInModal` that lets anyone test and record their status immediately with an anonymous device token:
+  - Step 1: **Working** (`Full-Time` / `Part-Time`) vs. **Not Working (Looking)**
+  - Step 2: If Not Working: **Duration** (`< 5w`, `5–14w`, `15–26w`, `27+w`)
+  - Step 3: **Target Industry** (Healthcare, Tech, Retail, Construction, Hospitality, etc.) + Optional **State** dropdown
+  - Step 4: One-tap option to **Verify with Google/Apple** to upgrade status to the official "Verified National Tally".
+- [ ] **Dual-Bar Benchmark Comparison & Supply vs. Demand**: Build `CitizenPulseComparisonBar` displaying real-time citizen ratios (e.g. *“42,150 Citizens Checked In • 78% Working / 22% Searching”*) and direct **Supply vs. Demand mismatch analysis** (comparing Citizen Target Industry Demand % against official BLS Job Openings %).
+- [ ] **30-Day Soft-Expiry Banner & Reconfirmation**: Implement a 1-tap *“Confirm Still Working / Looking”* banner after 30 days that refreshes the check-in or gracefully archives inactive ghost votes.
 - [ ] **Bot-Proof Split-Identity Auth**: Integrate Supabase Auth (1-tap Google/Apple Sign-In) combined with Cloudflare Turnstile; execute one-way `HMAC-SHA256` hashing so user email/names are never stored in the employment tally table.
 - [ ] **Automated Federal BLS Sync**: Build `.github/workflows/sync-bls-data.yml` and `scripts/sync-bls.ts` to pull latest monthly BLS/FRED numbers on release days and write static edge cache files for $0.
 - [ ] **Testing & Quality Assurance**: Write automated component tests (`tests/phase5-citizen-checkin.test.tsx`) for check-in submission, anonymization, and comparison UI states.
