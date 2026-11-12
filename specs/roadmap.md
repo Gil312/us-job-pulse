@@ -50,14 +50,27 @@ Phases are intentionally small — each should be implementable in one focused s
 
 ---
 
-## Phase 5: Live Citizen Check-In, Privacy-Preserving Auth & Official API Sync (Planned)
+## Phase 5: Citizen Check-In Platform (Supabase + Cloudflare + GitHub Actions)
 
-**Goal:** Enable US citizens to submit live work status (`Working` [Full-Time/Part-Time] vs. `Not Working` + unemployment duration `<5w / 5-14w / 15-26w / 27+w` + target industry) with anti-bot protection, split-identity privacy hashing, and live BLS/FRED API synchronization.
+**Goal:** Transform US Job Pulse into a crowdsourced, privacy-preserving nationwide labor barometer where verified citizens check in with their live work status (`Working` [Full-Time/Part-Time] vs. `Not Working` + duration + target industry) alongside the official BLS baseline, running on a $0/month architecture.
 
-- [ ] Build the 10-second `CitizenCheckInSheet` (`Working` vs. `Not Working` + duration bracket + target industry) and a separate **Live Citizen Pulse** comparison bar alongside Official BLS benchmarks.
-- [ ] Implement Split-Identity Verification (Google/Apple OAuth + Cloudflare Turnstile + `HMAC-SHA256` one-way hash linking 1 active status per human without storing PII alongside labor records, plus 30-day auto-expiry TTL).
-- [ ] Add a scheduled BLS/FRED/USAJOBS API ingestion adapter to replace the local baseline snapshot with live federal release syncs.
-- [ ] Write integration and privacy-isolation tests verifying anonymous aggregation, single-status upsert, and expiration behavior.
+### Architectural Decision: Why This Specific Path?
+1. **Supabase (PostgreSQL + Auth + Realtime)**:
+   - **SQL Aggregations vs. NoSQL Firestore**: Analyzing live employment across 50 states and 20 industries requires heavy `GROUP BY` and `COUNT(*)` calculations. In PostgreSQL, this is an instant single database query; in Firestore NoSQL, it requires reading millions of documents or writing complex increment counters.
+   - **Medical-Grade Privacy via Row-Level Security (RLS)**: PostgreSQL native RLS guarantees that no user can query another citizen's personal history.
+   - **Cost Predictability**: Supabase Free Tier covers 50,000 active users, and scales at **$0.00324/MAU** (40% cheaper than Firebase's $0.0055/MAU).
+2. **Cloudflare Pages (Global Edge Delivery)**:
+   - **Unlimited Free Bandwidth**: Unlike Firebase (360 MB/day) or Vercel (100 GB/mo), Cloudflare provides unlimited global CDN bandwidth for $0, preventing traffic spikes on federal release days from generating surprise bills.
+3. **GitHub Actions (Scheduled Federal Ingestion)**:
+   - **$0 Cron without Credit Card Requirement**: Runs the 15-second weekly BLS API scraper for free, bypassing Firebase's requirement to upgrade to the Blaze credit-card plan for scheduled cloud functions.
+
+### Tasks:
+- [ ] **Data Model & Privacy Contract**: Define the Supabase PostgreSQL schema with `citizen_checkins` table (anonymized hash `user_hash`, `status`, `duration_bucket`, `target_industry`, `state`, `updated_at`, `expires_at` with 30-day TTL) and strict Row-Level Security (RLS) policies.
+- [ ] **Client Check-In UI Flow**: Build the mobile-first `CitizenCheckInModal` (10-second flow: Step 1 `Working` [FT/PT] or `Not Working` -> Step 2 `Unemployment Duration` `<5w / 5-14w / 15-26w / 27+w` -> Step 3 `Target Industry`).
+- [ ] **Dual-Bar Live Comparison Component**: Build `CitizenPulseComparisonBar` displaying real-time citizen-reported ratios (e.g. *“42,150 Citizens Checked In • 78% Working / 22% Searching • Top Desired Sector: Healthcare”*) alongside official BLS numbers.
+- [ ] **Bot-Proof Split-Identity Auth**: Integrate Supabase Auth (1-tap Google/Apple Sign-In) combined with Cloudflare Turnstile; execute one-way `HMAC-SHA256` hashing so user email/names are never stored in the employment tally table.
+- [ ] **Automated Federal BLS Sync**: Build `.github/workflows/sync-bls-data.yml` and `scripts/sync-bls.ts` to pull latest monthly BLS/FRED numbers on release days and write static edge cache files for $0.
+- [ ] **Testing & Quality Assurance**: Write automated component tests (`tests/phase5-citizen-checkin.test.tsx`) for check-in submission, anonymization, and comparison UI states.
 
 ---
 

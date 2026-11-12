@@ -24,6 +24,14 @@
 - **Database / Store**:
   - Built-in verified US BLS & JOLTS dataset (`src/data/usLaborBaseline.ts`) for instant zero-latency offline/mobile loading.
   - `localStorage` persistence for user preferences (active `PopulationLens`, `LivePulseMode` toggle, last selected `MicroDimension`, and optional custom BLS/FRED API key cache).
+  - **Phase 5 Production Backend**: **Supabase (Managed PostgreSQL 15+)** with native Row-Level Security (RLS) for anonymous citizen check-in records (`citizen_checkins`) and PostgreSQL views/RPCs for high-performance aggregations (`GROUP BY industry, duration`).
+- **Authentication & Security**:
+  - **Supabase Auth**: OAuth (Google & Apple) + Cloudflare Turnstile anti-bot verification.
+  - **Split-Identity Privacy**: `HMAC-SHA256` hashing on user IDs so personal identities (emails/names) are never stored in the civic labor tally database.
+  - **Data Retention**: 30-day auto-expiration TTL on active check-ins via `pg_cron`.
+- **Hosting & Scheduled Ingestion**:
+  - **Edge Hosting**: **Cloudflare Pages** (unlimited global CDN bandwidth, $0/month).
+  - **Automated Federal Ingestion**: **GitHub Actions** scheduled cron (`scripts/sync-bls.ts`) for free BLS/FRED API sync without cloud function compute costs.
 - **Migration Strategy**: Versioned TypeScript schema snapshot (`DATA_SCHEMA_VERSION = '2026.11'`).
 
 ## Testing & Quality Control
