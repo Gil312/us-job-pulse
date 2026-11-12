@@ -16,8 +16,25 @@ const ALLOWED_LENSES: readonly PopulationLens[] = ['all', 'employed', 'unemploye
 const ALLOWED_PULSE_MODES: readonly LivePulseMode[] = ['snapshot', 'session', 'today'];
 
 export function App() {
-  const [data] = useState(US_LABOR_BASELINE);
+  const [data, setData] = useState(US_LABOR_BASELINE);
   const [selectedMetricId, setSelectedMetricId] = useState<MacroMetricId | null>(null);
+
+  // Auto-fetch latest static synced snapshot if available
+  useEffect(() => {
+    fetch('/data/latest.json')
+      .then((res) => {
+        if (!res.ok) throw new Error('No synced snapshot found');
+        return res.json();
+      })
+      .then((remoteSnapshot) => {
+        if (remoteSnapshot && remoteSnapshot.metrics) {
+          setData(remoteSnapshot);
+        }
+      })
+      .catch(() => {
+        // Silently use built-in baseline if offline or running in local test mode
+      });
+  }, []);
   const [activeLens, setActiveLens, resetLens] = usePersistentState<PopulationLens>(
     'usjp_population_lens',
     'all',

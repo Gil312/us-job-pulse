@@ -1,0 +1,1204 @@
+{
+  "timestamp": "2026-11-12T18:16:18.854Z",
+  "monthReported": "October 2026 BLS & JOLTS Release",
+  "source": "U.S. Bureau of Labor Statistics (Current Population Survey & JOLTS)",
+  "headlineSummary": "US Civilian Labor Force steady at 168.4M with 4.1% Unemployment & 7.74M Active Postings.",
+  "populationTotal": 341200000,
+  "civilianLaborForce": 168400000,
+  "participationRate": 62.7,
+  "unemploymentRate": 4.1,
+  "runRatesPerSecond": {
+    "hires": 2.08,
+    "layoffs": 0.62,
+    "postingsAdded": 2.95
+  },
+  "metrics": {
+    "us_population": {
+      "id": "us_population",
+      "title": "US Total Population",
+      "shortLabel": "US Population",
+      "headlineValue": 341200000,
+      "formattedValue": "341.2M",
+      "unit": "people",
+      "momChange": 0.08,
+      "momFormatted": "+0.08% MoM",
+      "momDirection": "up",
+      "description": "Total resident civilian non-institutional and broader US population.",
+      "category": "population",
+      "accentColor": "blue",
+      "breakdown": {
+        "sector": [
+          {
+            "id": "civ_labor_force",
+            "label": "Civilian Labor Force",
+            "value": 168400000,
+            "formattedValue": "168.4M",
+            "sharePercentage": 49.4,
+            "deltaMoM": 0.1,
+            "deltaType": "positive"
+          },
+          {
+            "id": "not_in_labor_force",
+            "label": "Not in Labor Force (Retirees, Students, Homemakers)",
+            "value": 100800000,
+            "formattedValue": "100.8M",
+            "sharePercentage": 29.5,
+            "deltaMoM": -0.05,
+            "deltaType": "neutral"
+          },
+          {
+            "id": "youth_under_16",
+            "label": "Under 16 & Non-Civilian",
+            "value": 72000000,
+            "formattedValue": "72.0M",
+            "sharePercentage": 21.1,
+            "deltaMoM": 0.02,
+            "deltaType": "neutral"
+          }
+        ],
+        "demographics": [
+          {
+            "id": "age_prime",
+            "label": "Prime Age (25–54 yrs)",
+            "value": 128600000,
+            "formattedValue": "128.6M",
+            "sharePercentage": 37.7
+          },
+          {
+            "id": "age_senior",
+            "label": "Mature & Retired (55+ yrs)",
+            "value": 102400000,
+            "formattedValue": "102.4M",
+            "sharePercentage": 30
+          },
+          {
+            "id": "age_youth",
+            "label": "Youth & Young Adult (16–24 yrs)",
+            "value": 38200000,
+            "formattedValue": "38.2M",
+            "sharePercentage": 11.2
+          },
+          {
+            "id": "age_children",
+            "label": "Children (< 16 yrs)",
+            "value": 72000000,
+            "formattedValue": "72.0M",
+            "sharePercentage": 21.1
+          }
+        ],
+        "trend12m": [
+          {
+            "id": "m1",
+            "label": "Nov 25",
+            "value": 339.8,
+            "formattedValue": "339.8M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m2",
+            "label": "Dec 25",
+            "value": 339.9,
+            "formattedValue": "339.9M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m3",
+            "label": "Jan 26",
+            "value": 340.1,
+            "formattedValue": "340.1M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m4",
+            "label": "Feb 26",
+            "value": 340.3,
+            "formattedValue": "340.3M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m5",
+            "label": "Mar 26",
+            "value": 340.4,
+            "formattedValue": "340.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m6",
+            "label": "Apr 26",
+            "value": 340.6,
+            "formattedValue": "340.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m7",
+            "label": "May 26",
+            "value": 340.7,
+            "formattedValue": "340.7M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m8",
+            "label": "Jun 26",
+            "value": 340.8,
+            "formattedValue": "340.8M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m9",
+            "label": "Jul 26",
+            "value": 340.9,
+            "formattedValue": "340.9M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m10",
+            "label": "Aug 26",
+            "value": 341,
+            "formattedValue": "341.0M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m11",
+            "label": "Sep 26",
+            "value": 341.1,
+            "formattedValue": "341.1M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m12",
+            "label": "Oct 26",
+            "value": 341.2,
+            "formattedValue": "341.2M",
+            "sharePercentage": 100
+          }
+        ]
+      }
+    },
+    "employed": {
+      "id": "employed",
+      "title": "Employed Workforce",
+      "shortLabel": "Employed",
+      "headlineValue": 161500000,
+      "formattedValue": "161.5M",
+      "unit": "workers",
+      "momChange": 0.15,
+      "momFormatted": "+240K MoM",
+      "momDirection": "up",
+      "description": "Civilian employment with breakdown into full-time and part-time workers.",
+      "category": "workforce",
+      "accentColor": "emerald",
+      "subSegments": {
+        "fullTime": {
+          "count": 134800000,
+          "formatted": "134.8M",
+          "percentage": 83.5
+        },
+        "partTime": {
+          "count": 26700000,
+          "formatted": "26.7M",
+          "percentage": 16.5
+        }
+      },
+      "breakdown": {
+        "sector": [
+          {
+            "id": "sec_health",
+            "label": "Health Care & Social Assistance",
+            "value": 22100000,
+            "formattedValue": "22.1M",
+            "sharePercentage": 13.7,
+            "deltaMoM": 0.3,
+            "deltaType": "positive"
+          },
+          {
+            "id": "sec_prof",
+            "label": "Professional & Business Services",
+            "value": 23000000,
+            "formattedValue": "23.0M",
+            "sharePercentage": 14.2,
+            "deltaMoM": 0.1,
+            "deltaType": "positive"
+          },
+          {
+            "id": "sec_gov",
+            "label": "Government & Public Admin",
+            "value": 23400000,
+            "formattedValue": "23.4M",
+            "sharePercentage": 14.5,
+            "deltaMoM": 0.2,
+            "deltaType": "positive"
+          },
+          {
+            "id": "sec_trade",
+            "label": "Retail Trade & Logistics",
+            "value": 21200000,
+            "formattedValue": "21.2M",
+            "sharePercentage": 13.1,
+            "deltaMoM": -0.1,
+            "deltaType": "neutral"
+          },
+          {
+            "id": "sec_hosp",
+            "label": "Leisure & Hospitality",
+            "value": 16900000,
+            "formattedValue": "16.9M",
+            "sharePercentage": 10.5,
+            "deltaMoM": 0.4,
+            "deltaType": "positive"
+          },
+          {
+            "id": "sec_mfg",
+            "label": "Manufacturing",
+            "value": 12900000,
+            "formattedValue": "12.9M",
+            "sharePercentage": 8,
+            "deltaMoM": -0.2,
+            "deltaType": "negative"
+          },
+          {
+            "id": "sec_const",
+            "label": "Construction",
+            "value": 8300000,
+            "formattedValue": "8.3M",
+            "sharePercentage": 5.1,
+            "deltaMoM": 0.2,
+            "deltaType": "positive"
+          },
+          {
+            "id": "sec_tech",
+            "label": "Information & Tech",
+            "value": 3100000,
+            "formattedValue": "3.1M",
+            "sharePercentage": 1.9,
+            "deltaMoM": -0.1,
+            "deltaType": "neutral"
+          },
+          {
+            "id": "sec_fin",
+            "label": "Financial Activities & Real Estate",
+            "value": 9300000,
+            "formattedValue": "9.3M",
+            "sharePercentage": 5.8,
+            "deltaMoM": 0.1,
+            "deltaType": "positive"
+          },
+          {
+            "id": "sec_edu",
+            "label": "Private Educational Services",
+            "value": 3900000,
+            "formattedValue": "3.9M",
+            "sharePercentage": 2.4,
+            "deltaMoM": 0.3,
+            "deltaType": "positive"
+          },
+          {
+            "id": "sec_other",
+            "label": "Other Services & Self-Employed",
+            "value": 17400000,
+            "formattedValue": "17.4M",
+            "sharePercentage": 10.8
+          }
+        ],
+        "demographics": [
+          {
+            "id": "ft_standard",
+            "label": "Full-Time Workers (>=35 hrs/wk)",
+            "value": 134800000,
+            "formattedValue": "134.8M",
+            "sharePercentage": 83.5,
+            "subLabel": "Primary economic engine"
+          },
+          {
+            "id": "pt_voluntary",
+            "label": "Part-Time Noneconomic (Voluntary)",
+            "value": 22300000,
+            "formattedValue": "22.3M",
+            "sharePercentage": 13.8,
+            "subLabel": "School, family, lifestyle"
+          },
+          {
+            "id": "pt_economic",
+            "label": "Part-Time for Economic Reasons (Slack work)",
+            "value": 4400000,
+            "formattedValue": "4.4M",
+            "sharePercentage": 2.7,
+            "subLabel": "Could not find full-time"
+          }
+        ],
+        "trend12m": [
+          {
+            "id": "m1",
+            "label": "Nov 25",
+            "value": 160.8,
+            "formattedValue": "160.8M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m2",
+            "label": "Dec 25",
+            "value": 160.9,
+            "formattedValue": "160.9M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m3",
+            "label": "Jan 26",
+            "value": 161,
+            "formattedValue": "161.0M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m4",
+            "label": "Feb 26",
+            "value": 161.1,
+            "formattedValue": "161.1M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m5",
+            "label": "Mar 26",
+            "value": 161.2,
+            "formattedValue": "161.2M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m6",
+            "label": "Apr 26",
+            "value": 161.2,
+            "formattedValue": "161.2M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m7",
+            "label": "May 26",
+            "value": 161.3,
+            "formattedValue": "161.3M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m8",
+            "label": "Jun 26",
+            "value": 161.3,
+            "formattedValue": "161.3M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m9",
+            "label": "Jul 26",
+            "value": 161.4,
+            "formattedValue": "161.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m10",
+            "label": "Aug 26",
+            "value": 161.4,
+            "formattedValue": "161.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m11",
+            "label": "Sep 26",
+            "value": 161.5,
+            "formattedValue": "161.5M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m12",
+            "label": "Oct 26",
+            "value": 161.5,
+            "formattedValue": "161.5M",
+            "sharePercentage": 100
+          }
+        ]
+      }
+    },
+    "unemployed": {
+      "id": "unemployed",
+      "title": "Unemployed Population",
+      "shortLabel": "Unemployed",
+      "headlineValue": 6900000,
+      "formattedValue": "6.9M",
+      "unit": "people",
+      "momChange": -0.1,
+      "momFormatted": "-70K MoM (4.1% Rate)",
+      "momDirection": "down",
+      "description": "Actively searching for work within the past 4 weeks.",
+      "category": "workforce",
+      "accentColor": "amber",
+      "breakdown": {
+        "sector": [
+          {
+            "id": "un_service",
+            "label": "Service & Hospitality",
+            "value": 1620000,
+            "formattedValue": "1.62M",
+            "sharePercentage": 23.5
+          },
+          {
+            "id": "un_sales",
+            "label": "Retail & Office Support",
+            "value": 1450000,
+            "formattedValue": "1.45M",
+            "sharePercentage": 21
+          },
+          {
+            "id": "un_prod",
+            "label": "Production & Manufacturing",
+            "value": 890000,
+            "formattedValue": "890K",
+            "sharePercentage": 12.9
+          },
+          {
+            "id": "un_const",
+            "label": "Natural Resources & Construction",
+            "value": 750000,
+            "formattedValue": "750K",
+            "sharePercentage": 10.9
+          },
+          {
+            "id": "un_prof",
+            "label": "Management & Professional",
+            "value": 1400000,
+            "formattedValue": "1.40M",
+            "sharePercentage": 20.3
+          },
+          {
+            "id": "un_new",
+            "label": "New Labor Market Entrants",
+            "value": 790000,
+            "formattedValue": "790K",
+            "sharePercentage": 11.4
+          }
+        ],
+        "demographics": [
+          {
+            "id": "dur_short",
+            "label": "Less than 5 Weeks (Frictionally unemployed)",
+            "value": 2450000,
+            "formattedValue": "2.45M",
+            "sharePercentage": 35.5
+          },
+          {
+            "id": "dur_mid",
+            "label": "5 to 14 Weeks",
+            "value": 1980000,
+            "formattedValue": "1.98M",
+            "sharePercentage": 28.7
+          },
+          {
+            "id": "dur_long",
+            "label": "15 to 26 Weeks",
+            "value": 1020000,
+            "formattedValue": "1.02M",
+            "sharePercentage": 14.8
+          },
+          {
+            "id": "dur_chronic",
+            "label": "27+ Weeks (Long-term unemployed)",
+            "value": 1450000,
+            "formattedValue": "1.45M",
+            "sharePercentage": 21
+          }
+        ],
+        "trend12m": [
+          {
+            "id": "m1",
+            "label": "Nov 25",
+            "value": 6.5,
+            "formattedValue": "6.5M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m2",
+            "label": "Dec 25",
+            "value": 6.6,
+            "formattedValue": "6.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m3",
+            "label": "Jan 26",
+            "value": 6.7,
+            "formattedValue": "6.7M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m4",
+            "label": "Feb 26",
+            "value": 6.8,
+            "formattedValue": "6.8M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m5",
+            "label": "Mar 26",
+            "value": 6.7,
+            "formattedValue": "6.7M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m6",
+            "label": "Apr 26",
+            "value": 6.8,
+            "formattedValue": "6.8M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m7",
+            "label": "May 26",
+            "value": 6.9,
+            "formattedValue": "6.9M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m8",
+            "label": "Jun 26",
+            "value": 7,
+            "formattedValue": "7.0M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m9",
+            "label": "Jul 26",
+            "value": 7.1,
+            "formattedValue": "7.1M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m10",
+            "label": "Aug 26",
+            "value": 7,
+            "formattedValue": "7.0M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m11",
+            "label": "Sep 26",
+            "value": 7,
+            "formattedValue": "7.0M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m12",
+            "label": "Oct 26",
+            "value": 6.9,
+            "formattedValue": "6.9M",
+            "sharePercentage": 100
+          }
+        ]
+      }
+    },
+    "job_postings": {
+      "id": "job_postings",
+      "title": "US Job Postings & Openings",
+      "shortLabel": "Job Postings",
+      "headlineValue": 7740000,
+      "formattedValue": "7.74M",
+      "unit": "openings",
+      "momChange": 1.8,
+      "momFormatted": "+140K MoM (1.12 per Job Seeker)",
+      "momDirection": "up",
+      "description": "Total unfilled job openings across private and public US employers (JOLTS).",
+      "category": "velocity",
+      "accentColor": "cyan",
+      "breakdown": {
+        "sector": [
+          {
+            "id": "post_health",
+            "label": "Healthcare & Social Assistance",
+            "value": 1720000,
+            "formattedValue": "1.72M",
+            "sharePercentage": 22.2,
+            "deltaMoM": 3.1,
+            "deltaType": "positive"
+          },
+          {
+            "id": "post_prof",
+            "label": "Professional & Tech Services",
+            "value": 1430000,
+            "formattedValue": "1.43M",
+            "sharePercentage": 18.5,
+            "deltaMoM": 1.2,
+            "deltaType": "positive"
+          },
+          {
+            "id": "post_hosp",
+            "label": "Accommodations & Food Services",
+            "value": 980000,
+            "formattedValue": "980K",
+            "sharePercentage": 12.7,
+            "deltaMoM": -0.8,
+            "deltaType": "negative"
+          },
+          {
+            "id": "post_trade",
+            "label": "Retail & Wholesale Trade",
+            "value": 840000,
+            "formattedValue": "840K",
+            "sharePercentage": 10.9,
+            "deltaMoM": 2,
+            "deltaType": "positive"
+          },
+          {
+            "id": "post_gov",
+            "label": "State & Local Government",
+            "value": 790000,
+            "formattedValue": "790K",
+            "sharePercentage": 10.2,
+            "deltaMoM": 0.5,
+            "deltaType": "positive"
+          },
+          {
+            "id": "post_mfg",
+            "label": "Manufacturing",
+            "value": 540000,
+            "formattedValue": "540K",
+            "sharePercentage": 7,
+            "deltaMoM": -2.1,
+            "deltaType": "negative"
+          },
+          {
+            "id": "post_const",
+            "label": "Construction",
+            "value": 410000,
+            "formattedValue": "410K",
+            "sharePercentage": 5.3,
+            "deltaMoM": 1.4,
+            "deltaType": "positive"
+          },
+          {
+            "id": "post_fin",
+            "label": "Finance & Real Estate",
+            "value": 420000,
+            "formattedValue": "420K",
+            "sharePercentage": 5.4,
+            "deltaMoM": 0.9,
+            "deltaType": "positive"
+          },
+          {
+            "id": "post_other",
+            "label": "Other Services",
+            "value": 610000,
+            "formattedValue": "610K",
+            "sharePercentage": 7.9
+          }
+        ],
+        "demographics": [
+          {
+            "id": "edu_college",
+            "label": "Bachelor’s Degree & Higher",
+            "value": 3350000,
+            "formattedValue": "3.35M",
+            "sharePercentage": 43.3,
+            "subLabel": "High technical/credential requirement"
+          },
+          {
+            "id": "edu_some",
+            "label": "Some College / Vocational / Assoc.",
+            "value": 2210000,
+            "formattedValue": "2.21M",
+            "sharePercentage": 28.6,
+            "subLabel": "Skilled trades and medical tech"
+          },
+          {
+            "id": "edu_hs",
+            "label": "High School Diploma or Equivalent",
+            "value": 1820000,
+            "formattedValue": "1.82M",
+            "sharePercentage": 23.5,
+            "subLabel": "Service, retail, logistics"
+          },
+          {
+            "id": "edu_none",
+            "label": "No Formal Credential Required",
+            "value": 360000,
+            "formattedValue": "360K",
+            "sharePercentage": 4.6,
+            "subLabel": "Entry-level seasonal/general"
+          }
+        ],
+        "trend12m": [
+          {
+            "id": "m1",
+            "label": "Nov 25",
+            "value": 8.4,
+            "formattedValue": "8.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m2",
+            "label": "Dec 25",
+            "value": 8.2,
+            "formattedValue": "8.2M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m3",
+            "label": "Jan 26",
+            "value": 8.1,
+            "formattedValue": "8.1M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m4",
+            "label": "Feb 26",
+            "value": 8,
+            "formattedValue": "8.0M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m5",
+            "label": "Mar 26",
+            "value": 7.9,
+            "formattedValue": "7.9M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m6",
+            "label": "Apr 26",
+            "value": 7.8,
+            "formattedValue": "7.8M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m7",
+            "label": "May 26",
+            "value": 7.7,
+            "formattedValue": "7.7M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m8",
+            "label": "Jun 26",
+            "value": 7.6,
+            "formattedValue": "7.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m9",
+            "label": "Jul 26",
+            "value": 7.6,
+            "formattedValue": "7.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m10",
+            "label": "Aug 26",
+            "value": 7.7,
+            "formattedValue": "7.7M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m11",
+            "label": "Sep 26",
+            "value": 7.6,
+            "formattedValue": "7.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m12",
+            "label": "Oct 26",
+            "value": 7.7,
+            "formattedValue": "7.7M",
+            "sharePercentage": 100
+          }
+        ]
+      }
+    },
+    "hires": {
+      "id": "hires",
+      "title": "US Monthly Hires",
+      "shortLabel": "Hires",
+      "headlineValue": 5420000,
+      "formattedValue": "5.42M",
+      "unit": "hires / mo",
+      "momChange": 0.9,
+      "momFormatted": "+48K MoM (~2.08/sec)",
+      "momDirection": "up",
+      "description": "Additions to payroll during the month across all industries.",
+      "category": "velocity",
+      "accentColor": "indigo",
+      "breakdown": {
+        "sector": [
+          {
+            "id": "hire_hosp",
+            "label": "Accommodations & Food Services",
+            "value": 920000,
+            "formattedValue": "920K",
+            "sharePercentage": 17,
+            "deltaMoM": 1.1,
+            "deltaType": "positive"
+          },
+          {
+            "id": "hire_prof",
+            "label": "Professional & Business Services",
+            "value": 890000,
+            "formattedValue": "890K",
+            "sharePercentage": 16.4,
+            "deltaMoM": 0.8,
+            "deltaType": "positive"
+          },
+          {
+            "id": "hire_health",
+            "label": "Healthcare & Social Assistance",
+            "value": 820000,
+            "formattedValue": "820K",
+            "sharePercentage": 15.1,
+            "deltaMoM": 1.5,
+            "deltaType": "positive"
+          },
+          {
+            "id": "hire_retail",
+            "label": "Retail Trade",
+            "value": 760000,
+            "formattedValue": "760K",
+            "sharePercentage": 14,
+            "deltaMoM": -0.4,
+            "deltaType": "neutral"
+          },
+          {
+            "id": "hire_const",
+            "label": "Construction",
+            "value": 390000,
+            "formattedValue": "390K",
+            "sharePercentage": 7.2,
+            "deltaMoM": 0.9,
+            "deltaType": "positive"
+          },
+          {
+            "id": "hire_mfg",
+            "label": "Manufacturing",
+            "value": 380000,
+            "formattedValue": "380K",
+            "sharePercentage": 7,
+            "deltaMoM": -1,
+            "deltaType": "negative"
+          },
+          {
+            "id": "hire_gov",
+            "label": "Government",
+            "value": 370000,
+            "formattedValue": "370K",
+            "sharePercentage": 6.8,
+            "deltaMoM": 0.3,
+            "deltaType": "positive"
+          },
+          {
+            "id": "hire_other",
+            "label": "Transportation & Logistics",
+            "value": 890000,
+            "formattedValue": "890K",
+            "sharePercentage": 16.4
+          }
+        ],
+        "demographics": [
+          {
+            "id": "hire_full",
+            "label": "Hired into Full-Time Positions",
+            "value": 4350000,
+            "formattedValue": "4.35M",
+            "sharePercentage": 80.3
+          },
+          {
+            "id": "hire_part",
+            "label": "Hired into Part-Time Roles",
+            "value": 1070000,
+            "formattedValue": "1.07M",
+            "sharePercentage": 19.7
+          }
+        ],
+        "trend12m": [
+          {
+            "id": "m1",
+            "label": "Nov 25",
+            "value": 5.6,
+            "formattedValue": "5.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m2",
+            "label": "Dec 25",
+            "value": 5.5,
+            "formattedValue": "5.5M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m3",
+            "label": "Jan 26",
+            "value": 5.4,
+            "formattedValue": "5.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m4",
+            "label": "Feb 26",
+            "value": 5.3,
+            "formattedValue": "5.3M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m5",
+            "label": "Mar 26",
+            "value": 5.4,
+            "formattedValue": "5.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m6",
+            "label": "Apr 26",
+            "value": 5.4,
+            "formattedValue": "5.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m7",
+            "label": "May 26",
+            "value": 5.3,
+            "formattedValue": "5.3M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m8",
+            "label": "Jun 26",
+            "value": 5.3,
+            "formattedValue": "5.3M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m9",
+            "label": "Jul 26",
+            "value": 5.4,
+            "formattedValue": "5.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m10",
+            "label": "Aug 26",
+            "value": 5.3,
+            "formattedValue": "5.3M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m11",
+            "label": "Sep 26",
+            "value": 5.4,
+            "formattedValue": "5.4M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m12",
+            "label": "Oct 26",
+            "value": 5.4,
+            "formattedValue": "5.4M",
+            "sharePercentage": 100
+          }
+        ]
+      }
+    },
+    "layoffs": {
+      "id": "layoffs",
+      "title": "Layoffs & Discharges",
+      "shortLabel": "Layoffs",
+      "headlineValue": 1610000,
+      "formattedValue": "1.61M",
+      "unit": "discharges / mo",
+      "momChange": -2.4,
+      "momFormatted": "-40K MoM (1.0% Rate)",
+      "momDirection": "down",
+      "description": "Involuntary separations initiated by employers (JOLTS).",
+      "category": "velocity",
+      "accentColor": "rose",
+      "breakdown": {
+        "sector": [
+          {
+            "id": "lay_prof",
+            "label": "Professional & Business Services",
+            "value": 340000,
+            "formattedValue": "340K",
+            "sharePercentage": 21.1,
+            "deltaMoM": -1.2,
+            "deltaType": "positive"
+          },
+          {
+            "id": "lay_trade",
+            "label": "Retail & Wholesale Trade",
+            "value": 270000,
+            "formattedValue": "270K",
+            "sharePercentage": 16.8,
+            "deltaMoM": 0.5,
+            "deltaType": "negative"
+          },
+          {
+            "id": "lay_hosp",
+            "label": "Leisure & Hospitality",
+            "value": 240000,
+            "formattedValue": "240K",
+            "sharePercentage": 14.9,
+            "deltaMoM": -2,
+            "deltaType": "positive"
+          },
+          {
+            "id": "lay_const",
+            "label": "Construction",
+            "value": 190000,
+            "formattedValue": "190K",
+            "sharePercentage": 11.8,
+            "deltaMoM": 1.1,
+            "deltaType": "negative"
+          },
+          {
+            "id": "lay_health",
+            "label": "Healthcare & Social Assistance",
+            "value": 180000,
+            "formattedValue": "180K",
+            "sharePercentage": 11.2,
+            "deltaMoM": -0.4,
+            "deltaType": "positive"
+          },
+          {
+            "id": "lay_mfg",
+            "label": "Manufacturing",
+            "value": 140000,
+            "formattedValue": "140K",
+            "sharePercentage": 8.7,
+            "deltaMoM": -1.5,
+            "deltaType": "positive"
+          },
+          {
+            "id": "lay_tech",
+            "label": "Information & Tech",
+            "value": 110000,
+            "formattedValue": "110K",
+            "sharePercentage": 6.8,
+            "deltaMoM": -3.2,
+            "deltaType": "positive"
+          },
+          {
+            "id": "lay_other",
+            "label": "Transportation & Other",
+            "value": 140000,
+            "formattedValue": "140K",
+            "sharePercentage": 8.7
+          }
+        ],
+        "demographics": [
+          {
+            "id": "lay_downsize",
+            "label": "Operational Restructuring & Downsizing",
+            "value": 780000,
+            "formattedValue": "780K",
+            "sharePercentage": 48.4
+          },
+          {
+            "id": "lay_seasonal",
+            "label": "End of Contract / Seasonal Project",
+            "value": 470000,
+            "formattedValue": "470K",
+            "sharePercentage": 29.2
+          },
+          {
+            "id": "lay_closure",
+            "label": "Facility Closure or Business Relocation",
+            "value": 210000,
+            "formattedValue": "210K",
+            "sharePercentage": 13
+          },
+          {
+            "id": "lay_auto",
+            "label": "Automation & Tech Transition",
+            "value": 150000,
+            "formattedValue": "150K",
+            "sharePercentage": 9.3
+          }
+        ],
+        "trend12m": [
+          {
+            "id": "m1",
+            "label": "Nov 25",
+            "value": 1.5,
+            "formattedValue": "1.5M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m2",
+            "label": "Dec 25",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m3",
+            "label": "Jan 26",
+            "value": 1.7,
+            "formattedValue": "1.7M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m4",
+            "label": "Feb 26",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m5",
+            "label": "Mar 26",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m6",
+            "label": "Apr 26",
+            "value": 1.5,
+            "formattedValue": "1.5M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m7",
+            "label": "May 26",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m8",
+            "label": "Jun 26",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m9",
+            "label": "Jul 26",
+            "value": 1.7,
+            "formattedValue": "1.7M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m10",
+            "label": "Aug 26",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m11",
+            "label": "Sep 26",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          },
+          {
+            "id": "m12",
+            "label": "Oct 26",
+            "value": 1.6,
+            "formattedValue": "1.6M",
+            "sharePercentage": 100
+          }
+        ]
+      }
+    }
+  }
+}

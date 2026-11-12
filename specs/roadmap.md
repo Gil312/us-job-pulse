@@ -74,7 +74,7 @@ Phases are intentionally small — each should be implementable in one focused s
 - [x] **Dual-Bar Benchmark Comparison & Supply vs. Demand**: Build `CitizenPulseComparisonBar` displaying real-time citizen ratios (e.g. *“42,150 Citizens Checked In • 78% Working / 22% Searching”*) and direct **Supply vs. Demand mismatch analysis** (comparing Citizen Target Industry Demand % against official BLS Job Openings %).
 - [x] **30-Day Soft-Expiry Banner & Reconfirmation**: Implement a 1-tap *“Confirm Still Working / Looking”* banner after 30 days that refreshes the check-in or gracefully archives inactive ghost votes.
 - [x] **Bot-Proof Split-Identity Auth**: Integrate Supabase Auth (1-tap Google/Apple Sign-In) combined with Cloudflare Turnstile; execute one-way `HMAC-SHA256` hashing so user email/names are never stored in the employment tally table.
-- [ ] **Automated Federal BLS Sync**: Build `.github/workflows/sync-bls-data.yml` and `scripts/sync-bls.ts` to pull latest monthly BLS/FRED numbers on release days and write static edge cache files for $0.
+- [x] **Automated Federal BLS Sync**: Build `.github/workflows/update-labor-data.yml` and `scripts/sync-bls.ts` to pull latest monthly BLS/FRED numbers on release days and write static edge cache files for $0.
 - [x] **Testing & Quality Assurance**: Write automated component tests (`tests/phase5-citizen-checkin.test.tsx`) for check-in submission, anonymization, and comparison UI states.
 
 ---
