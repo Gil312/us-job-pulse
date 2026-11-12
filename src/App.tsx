@@ -1,8 +1,15 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { US_LABOR_BASELINE } from './data/usLaborBaseline';
+import { INITIAL_CITIZEN_TALLY } from './data/citizenBaseline';
 import { MacroDashboard } from './components/MacroDashboard';
 import { usePersistentState } from './hooks/usePersistentState';
-import { LivePulseMode, MacroMetricId, PopulationLens } from './types/labor';
+import {
+  CitizenCheckInRecord,
+  CitizenTallySummary,
+  LivePulseMode,
+  MacroMetricId,
+  PopulationLens,
+} from './types/labor';
 import { Activity } from 'lucide-react';
 
 const ALLOWED_LENSES: readonly PopulationLens[] = ['all', 'employed', 'unemployed'];
@@ -21,6 +28,49 @@ export function App() {
     'snapshot',
     ALLOWED_PULSE_MODES
   );
+
+  // Local persistent state for the citizen check-in record
+  const [userCheckIn, setUserCheckIn] = useState<CitizenCheckInRecord | null>(() => {
+    try {
+      const stored = window.localStorage.getItem('usjp_citizen_record');
+      return stored ? JSON.parse(stored) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [citizenTally, setCitizenTally] = useState<CitizenTallySummary>(INITIAL_CITIZEN_TALLY);
+
+  useEffect(() => {
+    if (userCheckIn) {
+      try {
+        window.localStorage.setItem('usjp_citizen_record', JSON.stringify(userCheckIn));
+      } catch {
+        // Ignore storage error
+      }
+    }
+  }, [userCheckIn]);
+
+  const handleSubmitCheckIn = (record: CitizenCheckInRecord) => {
+    setUserCheckIn(record);
+
+    // Reactively update the live citizen tally
+    setCitizenTally((prev) => {
+      const isWorking = record.status.startsWith('working');
+      const newTotal = prev.totalCheckIns + (userCheckIn ? 0 : 1);
+      const newWorking = prev.workingCount + (isWorking ? (userCheckIn?.status.startsWith('working') ? 0 : 1) : 0);
+      const newLooking = prev.lookingCount + (!isWorking ? (!userCheckIn || userCheckIn.status.startsWith('working') ? 1 : 0) : 0);
+
+      return {
+        ...prev,
+        totalCheckIns: newTotal,
+        workingCount: newWorking,
+        workingPercentage: (newWorking / newTotal) * 100,
+        lookingCount: newLooking,
+        lookingPercentage: (newLooking / newTotal) * 100,
+      };
+    });
+  };
 
   const handleSelectMetric = (id: MacroMetricId) => {
     setSelectedMetricId(id);
@@ -81,6 +131,9 @@ export function App() {
           pulseMode={pulseMode}
           onPulseModeChange={setPulseMode}
           onResetPreferences={handleResetPreferences}
+          citizenTally={citizenTally}
+          userCheckIn={userCheckIn}
+          onSubmitCitizenCheckIn={handleSubmitCheckIn}
           lastUpdated={new Date().toLocaleTimeString()}
         />
       </main>

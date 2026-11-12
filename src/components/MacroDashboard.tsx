@@ -5,7 +5,11 @@ import { PopulationCompositionBar } from './PopulationCompositionBar';
 import { LiveVelocityBanner } from './LiveVelocityBanner';
 import { MicroDrilldownSheet } from './MicroDrilldownSheet';
 import { MethodologyModal } from './MethodologyModal';
+import { CitizenPulseComparisonBar } from './CitizenPulseComparisonBar';
+import { CitizenCheckInModal } from './CitizenCheckInModal';
 import {
+  CitizenCheckInRecord,
+  CitizenTallySummary,
   LivePulseMode,
   MacroMetricId,
   PopulationLens,
@@ -26,6 +30,9 @@ interface MacroDashboardProps {
   pulseMode?: LivePulseMode;
   onPulseModeChange?: (mode: LivePulseMode) => void;
   onResetPreferences?: () => void;
+  citizenTally?: CitizenTallySummary;
+  userCheckIn?: CitizenCheckInRecord | null;
+  onSubmitCitizenCheckIn?: (record: CitizenCheckInRecord) => void;
   lastUpdated?: string;
   onRefresh?: () => void;
 }
@@ -40,12 +47,16 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
   pulseMode = 'snapshot',
   onPulseModeChange,
   onResetPreferences,
+  citizenTally,
+  userCheckIn = null,
+  onSubmitCitizenCheckIn,
   lastUpdated,
   onRefresh,
 }) => {
   const [internalPulseMode, setInternalPulseMode] = useState<LivePulseMode>(pulseMode);
   const [showCompare, setShowCompare] = useState(false);
   const [showMethodology, setShowMethodology] = useState(false);
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
 
   const effectivePulseMode = onPulseModeChange ? pulseMode : internalPulseMode;
   const handlePulseModeChange = onPulseModeChange ?? setInternalPulseMode;
@@ -111,6 +122,16 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
         runRates={data.runRatesPerSecond}
         onOpenMethodology={() => setShowMethodology(true)}
       />
+
+      {/* Live Citizen Labor Barometer & Check-In */}
+      {citizenTally && (
+        <CitizenPulseComparisonBar
+          tally={citizenTally}
+          userRecord={userCheckIn}
+          onOpenCheckIn={() => setShowCheckInModal(true)}
+          onReconfirmCheckIn={() => setShowCheckInModal(true)}
+        />
+      )}
 
       {/* Front Dashboard Segmented Lens Bar */}
       <PopulationLensBar
@@ -331,6 +352,16 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
         isOpen={showMethodology}
         onClose={() => setShowMethodology(false)}
         data={data}
+      />
+
+      {/* Citizen Check-In Modal */}
+      <CitizenCheckInModal
+        isOpen={showCheckInModal}
+        onClose={() => setShowCheckInModal(false)}
+        currentRecord={userCheckIn}
+        onSubmitCheckIn={(record) => {
+          if (onSubmitCitizenCheckIn) onSubmitCitizenCheckIn(record);
+        }}
       />
 
       {/* Mobile / Standard Viewport Overlay Sheet */}

@@ -10,6 +10,41 @@ export type PopulationLens = 'all' | 'employed' | 'unemployed';
 
 export type LivePulseMode = 'snapshot' | 'session' | 'today';
 
+export type CitizenWorkStatus = 'working_fulltime' | 'working_parttime' | 'not_working_looking';
+
+export type UnemploymentDurationBracket = '< 5w' | '5-14w' | '15-26w' | '27+w';
+
+export type VerificationTier = 'anonymous_local' | 'verified_citizen';
+
+export interface CitizenCheckInRecord {
+  id: string;
+  status: CitizenWorkStatus;
+  duration?: UnemploymentDurationBracket;
+  targetIndustry: string;
+  state: string; // e.g. "TX", "CA", "US" (Nationwide)
+  verificationTier: VerificationTier;
+  updatedAt: string; // ISO string
+  expiresAt: string; // ISO string (30-day soft-expiry)
+}
+
+export interface CitizenTallySummary {
+  totalCheckIns: number;
+  workingCount: number;
+  workingPercentage: number;
+  fullTimeCount: number;
+  partTimeCount: number;
+  lookingCount: number;
+  lookingPercentage: number;
+  durationBreakdown: Record<UnemploymentDurationBracket, number>;
+  industryDemand: Array<{
+    industryId: string;
+    label: string;
+    count: number;
+    demandPercentage: number;
+    blsSupplyPercentage: number; // For Supply vs Demand comparison
+  }>;
+}
+
 export type MicroDimension = 'sector' | 'demographics' | 'trend12m';
 
 export interface MicroBarItem {
