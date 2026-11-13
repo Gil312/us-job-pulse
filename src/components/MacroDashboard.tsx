@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import type { User } from '@supabase/supabase-js';
 import { MetricCard } from './MetricCard';
 import { PopulationLensBar } from './PopulationLensBar';
 import { PopulationCompositionBar } from './PopulationCompositionBar';
@@ -33,6 +34,8 @@ interface MacroDashboardProps {
   citizenTally?: CitizenTallySummary;
   userCheckIn?: CitizenCheckInRecord | null;
   onSubmitCitizenCheckIn?: (record: CitizenCheckInRecord) => void;
+  authUser?: User | null;
+  onSignOut?: () => void;
   lastUpdated?: string;
   onRefresh?: () => void;
 }
@@ -50,6 +53,8 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
   citizenTally,
   userCheckIn = null,
   onSubmitCitizenCheckIn,
+  authUser = null,
+  onSignOut,
   lastUpdated,
   onRefresh,
 }) => {
@@ -359,6 +364,8 @@ export const MacroDashboard: React.FC<MacroDashboardProps> = ({
         isOpen={showCheckInModal}
         onClose={() => setShowCheckInModal(false)}
         currentRecord={userCheckIn}
+        authUser={authUser}
+        onSignOut={onSignOut}
         onSubmitCheckIn={(record) => {
           if (onSubmitCitizenCheckIn) onSubmitCitizenCheckIn(record);
         }}

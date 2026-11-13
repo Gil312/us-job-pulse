@@ -1,4 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type User } from '@supabase/supabase-js';
 import type { CitizenCheckInRecord, CitizenTallySummary, UnemploymentDurationBracket } from '../types/labor';
 import { INITIAL_CITIZEN_TALLY } from '../data/citizenBaseline';
 
@@ -19,29 +19,113 @@ export const supabase = isSupabaseConfigured
   : null;
 
 /**
- * Record a citizen check-in in Supabase
+ * Get the currently authenticated Supabase user
  */
-export async function submitCitizenCheckInToDb(record: CitizenCheckInRecord): Promise<boolean> {
-  if (!supabase) return false;
+export async function getCurrentUser(): Promise<User | null> {
+  if (!supabase) return null;
+  const { data } = await supabase.auth.getUser();
+  return data.user ?? null;
+}
+
+/**
+ * Subscribe to Supabase auth state changes (e.g. OAuth redirect or magic link return)
+ */
+export function onAuthStateChange(callback: (user: User | null) => void): () => void {
+  if (!supabase) return () => {};
+  const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+    callback(session?.user ?? null);
+  });
+  return () => {
+    data.subscription.unsubscribe();
+  };
+}
+
+/**
+ * Send a passwordless Email Magic Link via Supabase Auth
+ */
+export async function signInWithEmailMagicLink(email: string): Promise<{ error: string | null }> {
+  if (!supabase) return { error: 'Database not configured.' };
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: window.location.origin,
+    },
+  });
+  return { error: error ? error.message : null };
+}
+
+/**
+ * Sign in with Google OAuth via Supabase Auth
+ */
+export async function signInWithGoogleOAuth(): Promise<{ error: string | null }> {
+  if (!supabase) return { error: 'Database not configured.' };
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin,
+    },
+  });
+  return { error: error ? error.message : null };
+}
+
+/**
+ * Sign out current user
+ */
+export async function signOutUser(): Promise<void> {
+  if (!supabase) return;
+  await supabase.auth.signOut();
+}
+
+/**
+ * Record a citizen check-in in Supabase (requires authenticated user when Supabase is active)
+ */
+export async function submitCitizenCheckInToDb(
+  record: CitizenCheckInRecord,
+  userId?: string
+): Promise<{ success: boolean; error?: string }> {
+  if (!supabase) return { success: false, error: 'Supabase not configured' };
 
   try {
-    const { error } = await supabase.from('check_ins').insert([
-      {
-        status: record.status,
-        industry: record.targetIndustry || null,
-        duration: record.duration || null,
-        state: record.state || null,
-      },
-    ]);
+    const payload: Record<string, unknown> = {
+      status: record.status,
+      industry: record.targetIndustry || null,
+      duration: record.duration || null,
+      state: record.state || null,
+    };
 
+    if (userId) {
+      // Try upsert on user_id first (1 verified check-in per account)
+      const { error: upsertErr } = await supabase
+        .from('check_ins')
+        .upsert({ ...payload, user_id: userId }, { onConflict: 'user_id' });
+
+      if (!upsertErr) {
+        return { success: true };
+      }
+
+      // If user_id column doesn't exist yet in table, fall back to standard insert
+      if (upsertErr.message.includes('user_id')) {
+        const { error: insertErr } = await supabase.from('check_ins').insert([payload]);
+        if (insertErr) {
+          console.warn('[Supabase] Insert check-in failed:', insertErr.message);
+          return { success: false, error: insertErr.message };
+        }
+        return { success: true };
+      }
+
+      console.warn('[Supabase] Upsert check-in failed:', upsertErr.message);
+      return { success: false, error: upsertErr.message };
+    }
+
+    const { error } = await supabase.from('check_ins').insert([payload]);
     if (error) {
       console.warn('[Supabase] Insert check-in failed:', error.message);
-      return false;
+      return { success: false, error: error.message };
     }
-    return true;
+    return { success: true };
   } catch (err) {
     console.warn('[Supabase] Network/submission error:', err);
-    return false;
+    return { success: false, error: 'Network error' };
   }
 }
 

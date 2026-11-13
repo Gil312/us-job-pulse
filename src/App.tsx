@@ -1,7 +1,14 @@
 import { useState, useEffect } from 'react';
+import type { User } from '@supabase/supabase-js';
 import { US_LABOR_BASELINE } from './data/usLaborBaseline';
 import { INITIAL_CITIZEN_TALLY } from './data/citizenBaseline';
-import { fetchLiveCitizenTally, submitCitizenCheckInToDb } from './lib/supabase';
+import {
+  fetchLiveCitizenTally,
+  getCurrentUser,
+  onAuthStateChange,
+  signOutUser,
+  submitCitizenCheckInToDb,
+} from './lib/supabase';
 import { MacroDashboard } from './components/MacroDashboard';
 import { usePersistentState } from './hooks/usePersistentState';
 import {
@@ -58,12 +65,16 @@ export function App() {
   });
 
   const [citizenTally, setCitizenTally] = useState<CitizenTallySummary>(INITIAL_CITIZEN_TALLY);
+  const [authUser, setAuthUser] = useState<User | null>(null);
 
-  // Load live crowdsourced database tally from Supabase on mount
+  // Load live crowdsourced database tally & auth session from Supabase on mount
   useEffect(() => {
     fetchLiveCitizenTally().then((liveTally) => {
       setCitizenTally(liveTally);
     });
+    getCurrentUser().then(setAuthUser);
+    const unsubscribe = onAuthStateChange(setAuthUser);
+    return unsubscribe;
   }, []);
 
   useEffect(() => {
@@ -80,7 +91,7 @@ export function App() {
     setUserCheckIn(record);
 
     // Save to PostgreSQL database via Supabase
-    submitCitizenCheckInToDb(record).then((success) => {
+    submitCitizenCheckInToDb(record, authUser?.id).then(({ success }) => {
       if (success) {
         // Re-fetch fresh aggregate from database
         fetchLiveCitizenTally().then(setCitizenTally);
@@ -167,6 +178,8 @@ export function App() {
           citizenTally={citizenTally}
           userCheckIn={userCheckIn}
           onSubmitCitizenCheckIn={handleSubmitCheckIn}
+          authUser={authUser}
+          onSignOut={signOutUser}
           lastUpdated={new Date().toLocaleTimeString()}
         />
       </main>

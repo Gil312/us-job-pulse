@@ -1,6 +1,25 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from '../src/App';
+import { CitizenCheckInModal } from '../src/components/CitizenCheckInModal';
+
+vi.mock('../src/lib/supabase', async () => {
+  const actual = await vi.importActual<typeof import('../src/lib/supabase')>('../src/lib/supabase');
+  return {
+    ...actual,
+    isSupabaseConfigured: false,
+    getCurrentUser: vi.fn().mockResolvedValue(null),
+    onAuthStateChange: vi.fn().mockReturnValue(() => {}),
+    fetchLiveCitizenTally: vi.fn().mockImplementation(async () => {
+      const { INITIAL_CITIZEN_TALLY } = await import('../src/data/citizenBaseline');
+      return INITIAL_CITIZEN_TALLY;
+    }),
+    submitCitizenCheckInToDb: vi.fn().mockResolvedValue({ success: true }),
+    signInWithEmailMagicLink: vi.fn().mockResolvedValue({ error: null }),
+    signInWithGoogleOAuth: vi.fn().mockResolvedValue({ error: null }),
+    signOutUser: vi.fn().mockResolvedValue(undefined),
+  };
+});
 
 describe('Phase 5 - Live Citizen Check-In & Benchmark Barometer', () => {
   beforeEach(() => {
@@ -9,7 +28,7 @@ describe('Phase 5 - Live Citizen Check-In & Benchmark Barometer', () => {
 
   afterEach(() => {
     window.localStorage.clear();
-    vi.restoreAllMocks();
+    vi.clearAllMocks();
   });
 
   it('renders the Live Citizen Labor Barometer on the front dashboard', () => {
@@ -21,7 +40,7 @@ describe('Phase 5 - Live Citizen Check-In & Benchmark Barometer', () => {
     expect(screen.getByTestId('log-citizen-status-btn')).toHaveTextContent('Log Your Status');
   });
 
-  it('opens CitizenCheckInModal and supports the 10-second anonymous check-in flow', () => {
+  it('opens CitizenCheckInModal and supports the check-in flow when verified/offline', () => {
     render(<App />);
 
     fireEvent.click(screen.getByTestId('log-citizen-status-btn'));
@@ -58,6 +77,27 @@ describe('Phase 5 - Live Citizen Check-In & Benchmark Barometer', () => {
     expect(saved.state).toBe('TX');
     expect(saved.targetIndustry).toBe('tech');
     expect(saved.verificationTier).toBe('verified_citizen');
+  });
+
+  it('renders verified user email badge when authenticated with Supabase User', () => {
+    const mockUser = {
+      id: 'user-123',
+      email: 'citizen@usjobpulse.dev',
+    } as import('@supabase/supabase-js').User;
+
+    render(
+      <CitizenCheckInModal
+        isOpen={true}
+        onClose={() => {}}
+        currentRecord={null}
+        authUser={mockUser}
+        onSignOut={() => {}}
+        onSubmitCheckIn={() => {}}
+      />
+    );
+
+    expect(screen.getByText(/Verified: citizen@usjobpulse.dev/i)).toBeInTheDocument();
+    expect(screen.getByTestId('status-opt-looking')).toBeInTheDocument();
   });
 
   it('toggles the Citizen Desire vs BLS Openings Mismatch comparison panel', () => {
