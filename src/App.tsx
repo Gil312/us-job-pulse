@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { US_LABOR_BASELINE } from './data/usLaborBaseline';
 import { INITIAL_CITIZEN_TALLY } from './data/citizenBaseline';
+import { fetchLiveCitizenTally, submitCitizenCheckInToDb } from './lib/supabase';
 import { MacroDashboard } from './components/MacroDashboard';
 import { usePersistentState } from './hooks/usePersistentState';
 import {
@@ -58,6 +59,13 @@ export function App() {
 
   const [citizenTally, setCitizenTally] = useState<CitizenTallySummary>(INITIAL_CITIZEN_TALLY);
 
+  // Load live crowdsourced database tally from Supabase on mount
+  useEffect(() => {
+    fetchLiveCitizenTally().then((liveTally) => {
+      setCitizenTally(liveTally);
+    });
+  }, []);
+
   useEffect(() => {
     if (userCheckIn) {
       try {
@@ -71,7 +79,15 @@ export function App() {
   const handleSubmitCheckIn = (record: CitizenCheckInRecord) => {
     setUserCheckIn(record);
 
-    // Reactively update the live citizen tally
+    // Save to PostgreSQL database via Supabase
+    submitCitizenCheckInToDb(record).then((success) => {
+      if (success) {
+        // Re-fetch fresh aggregate from database
+        fetchLiveCitizenTally().then(setCitizenTally);
+      }
+    });
+
+    // Optimistically update the live citizen tally on screen immediately
     setCitizenTally((prev) => {
       const isWorking = record.status.startsWith('working');
       const newTotal = prev.totalCheckIns + (userCheckIn ? 0 : 1);
