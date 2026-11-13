@@ -66,6 +66,7 @@ export function App() {
 
   const [citizenTally, setCitizenTally] = useState<CitizenTallySummary>(INITIAL_CITIZEN_TALLY);
   const [authUser, setAuthUser] = useState<User | null>(null);
+  const [dbError, setDbError] = useState<string | null>(null);
 
   // Load live crowdsourced database tally & auth session from Supabase on mount
   useEffect(() => {
@@ -89,12 +90,15 @@ export function App() {
 
   const handleSubmitCheckIn = (record: CitizenCheckInRecord) => {
     setUserCheckIn(record);
+    setDbError(null);
 
     // Save to PostgreSQL database via Supabase
-    submitCitizenCheckInToDb(record, authUser?.id).then(({ success }) => {
+    submitCitizenCheckInToDb(record, authUser?.id).then(({ success, error }) => {
       if (success) {
         // Re-fetch fresh aggregate from database
         fetchLiveCitizenTally().then(setCitizenTally);
+      } else if (error && error !== 'Supabase not configured') {
+        setDbError(`Database save failed: ${error}`);
       }
     });
 
@@ -165,6 +169,20 @@ export function App() {
 
       {/* Main Content Area */}
       <main className="flex-1 pb-12">
+        {dbError && (
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+            <div className="p-3 rounded-xl bg-rose-500/15 border border-rose-500/30 text-rose-200 text-xs flex items-center justify-between gap-3">
+              <span>{dbError}</span>
+              <button
+                type="button"
+                onClick={() => setDbError(null)}
+                className="px-2 py-0.5 rounded bg-rose-500/20 hover:bg-rose-500/30 text-rose-100 font-semibold"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
         <MacroDashboard
           data={data}
           selectedMetricId={selectedMetricId}
